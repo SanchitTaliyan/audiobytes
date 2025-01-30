@@ -1,12 +1,12 @@
 from fastapi import Depends, APIRouter, HTTPException, status
 from sqlalchemy.orm import Session
 
-from config import cfg
+from config import db_manager
 from models.episodes import Episode
 from schemas.episodes import EpisodeCreate, EpisodeResponse, EpisodeUpdate
 
 api_router = APIRouter()
-get_db = cfg.db_manager.get_db
+get_db = db_manager.get_db
 
 @api_router.post("/", response_model=EpisodeResponse)
 def create_episode(episode: EpisodeCreate, db: Session = Depends(get_db)):

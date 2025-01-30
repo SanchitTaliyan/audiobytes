@@ -5,12 +5,36 @@ import os
 import redis
 from typing import Literal
 
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, text, Engine
+from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.pool import NullPool
 
 
 load_dotenv(override=True)
+
+class Config:
+    host = os.getenv("HOST")
+    port = int(os.getenv("PORT", "4000"))
+
+    project_name: str = os.getenv("PROJECT_NAME", "AudioByte")
+
+    db_host = os.getenv("DB_HOST")
+    db_port = os.getenv("DB_PORT")
+    db_name = os.getenv("DB_NAME")
+    db_user = os.getenv("DB_USER")
+    db_password = os.getenv("DB_PASSWORD")
+    db_url = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
+
+    redis_client_collection: dict[str, redis.Redis] = {}
+    @staticmethod
+    def redis_client(REDIS_DATABASE=None):
+        REDIS_DATABASE = REDIS_DATABASE or os.getenv("REDIS_DATABASE")
+        # print(Config.redis_client_collection)
+        if REDIS_DATABASE not in Config.redis_client_collection:
+            Config.redis_client_collection[REDIS_DATABASE] = redis.Redis(host=os.getenv("REDIS_HOST"), port=os.getenv("REDIS_PORT"), db=REDIS_DATABASE, decode_responses=True)
+        return Config.redis_client_collection[REDIS_DATABASE]
+    
+cfg = Config()
 
 class DatabaseCallback(Enum):
     fetchall = "fetchall"
@@ -20,13 +44,13 @@ class DatabaseManager:
         self.engines = {}
         self.sessions = {}
 
-    def get_engine(self, database_url):
+    def get_engine(self, database_url) -> Engine:
         if database_url not in self.engines:
             engine = create_engine(database_url, future=True, echo=False, poolclass=NullPool)
             self.engines[database_url] = engine
         return self.engines[database_url]
 
-    def get_session(self, database_url):
+    def get_session(self, database_url) -> sessionmaker[Session]:
         if database_url not in self.sessions:
             engine = self.get_engine(database_url)
             SessionLocal = sessionmaker(engine, expire_on_commit=False, autoflush=True)
@@ -34,8 +58,9 @@ class DatabaseManager:
         return self.sessions[database_url]
 
     @contextmanager
-    def get_db(self, database_url):
+    def get_db(self):
         session = None
+        database_url = cfg.db_url
         try:
             if session is None:
                 SessionLocal = self.get_session(database_url)
@@ -50,8 +75,8 @@ class DatabaseManager:
             if session:
                 session.close()
 
-    def execute(self, database_url, query, params=None, fetch: Literal["all", "one", "cursor"] = "all"):
-        with self.get_db(database_url) as session:
+    def execute(self, query, params=None, fetch: Literal["all", "one", "cursor"] = "all"):
+        with self.get_db() as session:
             try:
                 cursor = session.execute(query, params)
                 if cursor.returns_rows:
@@ -70,33 +95,4 @@ class DatabaseManager:
             except Exception as exc:
                 raise exc
 
-
-class Config:
-    host = os.getenv("HOST")
-    port = int(os.getenv("PORT", "4000"))
-
-    project_name: str = os.getenv("PROJECT_NAME", "AudioByte")
-
-    db_host = os.getenv("DB_HOST")
-    db_port = os.getenv("DB_PORT")
-    db_name = os.getenv("DB_NAME")
-    db_user = os.getenv("DB_USER")
-    db_password = os.getenv("DB_PASSWORD")
-
-
-    redis_client_collection: dict[str, redis.Redis] = {}
-    @staticmethod
-    def redis_client(REDIS_DATABASE=None):
-        REDIS_DATABASE = REDIS_DATABASE or os.getenv("REDIS_DATABASE")
-        # print(Config.redis_client_collection)
-        if REDIS_DATABASE not in Config.redis_client_collection:
-            Config.redis_client_collection[REDIS_DATABASE] = redis.Redis(host=os.getenv("REDIS_HOST"), port=os.getenv("REDIS_PORT"), db=REDIS_DATABASE, decode_responses=True)
-        return Config.redis_client_collection[REDIS_DATABASE]
-    
-    db_manager = DatabaseManager()
-    DATABASE_URL = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
-
-    def execute(self, query, params=None, fetch: Literal["all", "one", "cursor"] = "all", db_url = DATABASE_URL):
-        return self.db_manager.execute(db_url, query, params, fetch)
-    
-cfg = Config()
+db_manager = DatabaseManager()
