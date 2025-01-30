@@ -1,0 +1,17 @@
+.env
+.DS_Store
+.pytest_cache
+.mypy_cache
+
+# Virtual Environment
+venv/
+.venv/
+
+
+# Personal or sensitive data
+*.pem
+*.key
+*.cert
+google-credentials.json
+*.cfg
+*.ini
