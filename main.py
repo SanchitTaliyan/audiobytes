@@ -28,7 +28,11 @@ app.add_middleware(
 
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
 
-app.include_router(podcast.api_router, prefix="/podcasts", tags=["AudioByte Api's"])
+app.include_router(
+    podcast.api_router,
+    prefix="/episodes",
+    tags=["AudioByte Api's"]
+)
 
 @app.get("/")
 def read_root():
