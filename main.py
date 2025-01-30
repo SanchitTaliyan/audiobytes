@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
 from config import cfg
-from routers import podcast
+from routers import episodes
 
 if not cfg.project_name:
     cfg.project_name = "AudioByte"
@@ -29,7 +29,7 @@ app.add_middleware(
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
 
 app.include_router(
-    podcast.api_router,
+    episodes.api_router,
     prefix="/episodes",
     tags=["AudioByte Api's"]
 )
