@@ -1,48 +1,52 @@
 from fastapi import Depends, APIRouter, HTTPException, status
+from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from config import db_manager
-from models.episodes import Episode
 from schemas.episodes import EpisodeCreate, EpisodeResponse, EpisodeUpdate
 
 api_router = APIRouter()
 get_db = db_manager.get_db
+execute = db_manager.execute
 
 @api_router.post("/", response_model=EpisodeResponse)
 def create_episode(episode: EpisodeCreate, db: Session = Depends(get_db)):
-    new_episode = Episode(**episode.model_dump())
-    db.add(new_episode)
-    db.commit()
-    db.refresh(new_episode)
+    query = text("INSERT INTO episodes (title, description, duration, audio_link, is_bookmark, is_deleted) VALUES (:title, :description, :duration, :audio_link, :is_bookmark, :is_deleted) RETURNING *")
+    new_episode = execute(query, params=episode.model_dump())
     return new_episode
 
 @api_router.get("/{episode_id}", response_model=EpisodeResponse)
-def get_episode(episode_id: int, db: Session = Depends(get_db)):
-    episode = db.query(Episode).filter(Episode.id == episode_id).first()
+def get_episode(episode_id: int):
+    query = text("SELECT * FROM episodes WHERE id = :episode_id")
+    episode = execute(query, params={"episode_id": episode_id})
     if not episode:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Episode not found")
     return episode
 
 @api_router.get("/", response_model=list[EpisodeResponse])
-def list_episodes(db: Session = Depends(get_db)):
-    return db.query(Episode).all()
+def list_episodes():
+    query = text("SELECT * FROM episodes")
+    res = execute(query)
+    return res
 
 @api_router.put("/{episode_id}", response_model=EpisodeResponse)
 def update_episode(episode_id: int, episode: EpisodeUpdate, db: Session = Depends(get_db)):
-    existing_episode = db.query(Episode).filter(Episode.id == episode_id).first()
+    query = text("SELECT * FROM episodes WHERE id = :episode_id")
+    existing_episode = execute(query, params={"episode_id": episode_id})
     if not existing_episode:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Episode not found")
     for key, value in episode.model_dump().items():
         setattr(existing_episode, key, value)
-    db.commit()
-    db.refresh(existing_episode)
+    query = text("UPDATE episodes SET title = :title, description = :description, duration = :duration, audio_link = :audio_link, is_bookmark = :is_bookmark, is_deleted = :is_deleted WHERE id = :episode_id")
+    execute(query, params=episode.model_dump())
     return existing_episode
 
 @api_router.delete("/{episode_id}")
 def delete_episode(episode_id: int, db: Session = Depends(get_db)):
-    episode = db.query(Episode).filter(Episode.id == episode_id).first()
-    if not episode:
-        raise HTTPException(status_code=404, detail="Episode not found")
-    db.delete(episode)
-    db.commit()
+    query = text("SELECT * FROM episodes WHERE id = :episode_id")
+    existing_episode = execute(query, params={"episode_id": episode_id})
+    if not existing_episode:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Episode not found")
+    query = text("DELETE FROM episodes WHERE id = :episode_id")
+    execute(query, params={"episode_id": episode_id})
     return {"detail": "Episode deleted successfully"}

@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from enum import Enum
 import os
 import redis
-from typing import Literal
+from typing import Literal, Optional
 
 from sqlalchemy import create_engine, text, Engine
 from sqlalchemy.orm import sessionmaker, Session
@@ -23,7 +23,7 @@ class Config:
     db_name = os.getenv("DB_NAME")
     db_user = os.getenv("DB_USER")
     db_password = os.getenv("DB_PASSWORD")
-    db_url = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
+    db_url = f"postgresql://{db_user}:{db_password}@{db_host}/{db_name}"
 
     redis_client_collection: dict[str, redis.Redis] = {}
     @staticmethod
@@ -60,20 +60,18 @@ class DatabaseManager:
     @contextmanager
     def get_db(self):
         session = None
-        database_url = cfg.db_url
+        db_url = cfg.db_url
         try:
-            if session is None:
-                SessionLocal = self.get_session(database_url)
-                session = SessionLocal()
-
-            with session.begin():
-                yield session
-        except:
-            session.rollback()
-            raise
+            SessionLocal = self.get_session(db_url)
+            session = SessionLocal()
+            yield session
+        except Exception as e:
+            if session:
+                session.rollback()
+            raise e
         finally:
             if session:
-                session.close()
+                session.close() 
 
     def execute(self, query, params=None, fetch: Literal["all", "one", "cursor"] = "all"):
         with self.get_db() as session:
