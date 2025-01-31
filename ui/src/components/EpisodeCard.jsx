@@ -1,18 +1,26 @@
-import { format, formatDistanceToNow } from 'date-fns';
 import React from 'react';
-import eod from '../assets/eod.png';
-import mid from '../assets/mid.png';
-import morning from '../assets/morning.png';
-import { parseFloatToFixed } from '../utils/commonFunctions';
+import { getRelativeDate, parseFloatToFixed } from '../utils/commonFunctions';
 import { BookmarkFilledIcon } from './icons/BookmarkFilledIcon';
 import { BookmarkIcon } from './icons/BookmarkIcon';
 import { PlayIcon } from './icons/PlayIcon';
+import { format } from 'date-fns';
+import eod from '../assets/eod.png';
+import mid from '../assets/mid.png';
+import morning from '../assets/morning.png';
+import weekly from '../assets/weekly.png';
+import monthly from '../assets/monthly.png';
 
 const EpisodeCard = ({ episode }) => {
   const { title, description, duration, published_at, audio_link, is_bookmark, time_of_day } = episode;
   let thumbnailSrc;
 
   switch (time_of_day) {
+    case 'MONTHLY':
+      thumbnailSrc = monthly;
+      break;
+    case 'WEEKLY':
+      thumbnailSrc = weekly;
+      break;
     case 'MORNING':
       thumbnailSrc = morning;
       break;
@@ -33,7 +41,7 @@ const EpisodeCard = ({ episode }) => {
         </div>
         <div className='text-gray-300 text-sm text-nowrap font-normal leading-4.5 truncate'>{description}</div>
         <div className='flex gap-2 pt-3 justify-center items-center'>
-          <div className='text-gray-300 text-xs leading-3 grow'>{formatDistanceToNow(published_at, { addSuffix: true })}</div>
+          <div className='text-gray-300 text-xs leading-3 grow'>{getRelativeDate(published_at)}</div>
           <div className='flex gap-2 px-2.5 py-1.5 bg-[#3A3A3C] rounded-full'>
             <PlayIcon height={16} width={12} />
             {/* <ProgressBar/> */}
