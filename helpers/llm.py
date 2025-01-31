@@ -30,60 +30,32 @@ def get_prompt_template(podcast_type: str):
     # Define the templates for each podcast type
     templates = {
         "morning": """
-          Rise and shine! Welcome to your **Morning Insights** — the perfect way to kickstart your day and crush your goals!
+            Morning update:
+            - Bookings progress: {bookings_done} bookings done today.
+            - Targets: {leads_received} new leads, {fu_completed} follow-ups completed.
+            - Site visits: {planned_sv} visits planned, {planned_sv_leads} leads.
 
-          Here's a quick rundown of what's in store for today:
-
-          🌟 **Leads Received:** You’ve already got {leads_received} fresh leads today — keep that momentum going!
-          🌟 **Follow-Ups Completed:** {fu_completed} follow-ups done! Fantastic job staying on top of things!
-
-          🎯 **Site Visits Planned:** {planned_sv} site visits on the agenda, with {planned_sv_leads} leads lined up for action!
-          🎯 **Face-to-Face Meetings Planned:** Get ready for {planned_f2f} face-to-face meetings, with {planned_f2f_leads} leads to connect with in person.
-          🎯 **Follow-Ups Scheduled:** {planned_fu} follow-ups are in the cards, with {planned_fu_leads} leads to touch base with.
-
-          🔥 **Bookings Progress:** You’ve got this!
-          - **Bookings Done Today:** {bookings_done} bookings completed — incredible hustle!
-          - **Level 1 Bookings:** {bookings_at_l1} Level 1 bookings secured, with {booking_at_l1_leads} leads pushing you forward.
-          - **Level 2 Bookings:** You’ve locked in {bookings_at_l2} Level 2 bookings, with {booking_at_l2_leads} leads taking things to the next level.
-
-          Huge congrats on hitting your targets so early in the day! You’re making it happen!
-          """,
+            Please summarize this data in a natural, engaging way, showing excitement and motivation for the day ahead.
+            always find new way to motivate and add motivation quotes to the summary.
+        """,
         "eod": """
-          Good evening, and welcome to your End-of-Day Summary!
+            Evening update:
+            - Bookings progress: {bookings_done} bookings done today.
+            - Targets: {leads_received} new leads, {fu_completed} follow-ups completed.
+            - Site visits: {planned_sv} visits completed, {planned_sv_leads} leads.
 
-          Let’s take a look at the progress you've made today:
-
-          **Leads Received:** {leads_received} new leads received today.
-          **Follow-Ups Completed:** {fu_completed} follow-ups completed today.
-
-          **Site Visits Completed:** {planned_sv} site visits completed, with {planned_sv_leads} leads.
-          **Face-to-Face Meetings Completed:** {planned_f2f} face-to-face meetings completed, with {planned_f2f_leads} leads.
-          **Follow-Ups Completed:** {planned_fu} follow-ups completed, with {planned_fu_leads} leads.
-
-          **Bookings Progress:**
-          - **Total Bookings Done:** {bookings_done} bookings done today.
-          - **Level 1 Bookings:** {bookings_at_l1} bookings at Level 1, with {booking_at_l1_leads} leads.
-          - **Level 2 Bookings:** {bookings_at_l2} bookings at Level 2, with {booking_at_l2_leads} leads.
-
-          Excellent work today! You’re steadily progressing toward your goals. Keep up the momentum for tomorrow!
-          """,
+            Provide a summary of the day’s work in a positive tone, focusing on achievements and motivating for tomorrow.
+            always find new way to motivate and add motivation quotes to the summary.
+        """,
         "weekly": """
-          Congratulations on completing the week! Here’s your Weekly Wrap-Up:
+            Weekly progress:
+            - Total bookings: {bookings_done}.
+            - Leads received: {leads_received}, follow-ups completed: {fu_completed}.
+            - Site visits: {planned_sv} visits, {planned_sv_leads} leads.
 
-          **Leads Received:** {leads_received} new leads this week.
-          **Follow-Ups Completed:** {fu_completed} follow-ups completed this week.
-
-          **Site Visits Completed:** {planned_sv} site visits completed, with {planned_sv_leads} leads.
-          **Face-to-Face Meetings Completed:** {planned_f2f} face-to-face meetings completed, with {planned_f2f_leads} leads.
-          **Follow-Ups Completed:** {planned_fu} follow-ups completed, with {planned_fu_leads} leads.
-
-          **Bookings Achieved:**
-          - **Total Bookings for the Week:** {bookings_done}
-          - **Level 1 Bookings:** {bookings_at_l1}, with {booking_at_l1_leads} leads.
-          - **Level 2 Bookings:** {bookings_at_l2}, with {booking_at_l2_leads} leads.
-
-          It’s been a week of great progress! You’ve put in the effort, and it shows. Let’s keep up the good work next week. You’re definitely on the right track!
-          """
+            Write a wrap-up of the week’s performance, highlighting key achievements and motivating for next week.
+            always find new way to motivate and add motivation quotes to the summary.
+        """
     }
 
     # Return the correct template based on the podcast type
