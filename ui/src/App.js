@@ -1,9 +1,13 @@
+import { keyBy } from 'lodash-es';
+import { useEffect, useState } from 'react';
 import EndOfDayImg from "./assets/eod.png";
 import MorningImg from "./assets/morning.png";
 import WeeklyImg from "./assets/weekly.png";
+import EpisodeCard from './components/EpisodeCard';
 import { BookmarkFilledIcon } from "./components/icons/BookmarkFilledIcon";
 import { CloseIcon } from "./components/icons/CloseIcon";
 import { PlayIcon } from "./components/icons/PlayIcon";
+import episodesService from './services/episodesService';
 
 const config = {
   morning: {
@@ -24,33 +28,43 @@ const config = {
 };
 
 export function App() {
+  const [episodesList, setEpisodesList] = useState({});
+
+  const toogleBookmark = async (id, bookmark) => {
+    try {
+      const updatedEpisode = await episodesService.toogleBookmark({ episodeId: id, bookmark });
+      setEpisodesList((prev) => ({ ...prev, [id]: updatedEpisode }));
+    } catch (error) {
+      console.log('Failed to update episode bookmark', error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchAllEpisodes = async () => {
+      try {
+        const episodesList = await episodesService.getAllEpisodes();
+        console.log(episodesList.body);
+        setEpisodesList(keyBy(episodesList, 'id'));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchAllEpisodes();
+  }, []);
+
+  const episodes = Object.values(episodesList);
+
   return (
     <>
       <title>Today's Brief</title>
 
-      <div className="flex-1 bg-[#0A0A0A]">
+      <div className="flex-1 bg-[#0A0A0A] overflow-y-auto">
         <div className="flex h-9 flex-col items-start justify-start px-5 pt-2">
           <div className="flex items-center justify-start gap-1">
             <div className="text-[22px] font-bold leading-7 text-white">
               Today's Brief
             </div>
           </div>
-        </div>
-
-        <div className="no-scrollbar flex h-14 flex-row items-center justify-start gap-2 overflow-auto px-5 py-3">
-          <Filter
-            active
-            icon={
-              <BookmarkFilledIcon color="currentColor" width={16} height={16} />
-            }
-            label="Bookmarks"
-          />
-
-          <div className="h-7 border border-white/20" />
-
-          <Filter active label={config.morning.title} />
-          <Filter label={config.endOfDay.title} />
-          <Filter label={config.weekly.title} />
         </div>
 
         <div className="no-scrollbar flex flex-row gap-4 overflow-auto px-5 pb-[30px] pt-[10px]">
@@ -67,9 +81,29 @@ export function App() {
               </div>
             </div>
             <div className="font-['Inter'] text-[15px] font-normal leading-tight text-[#757575]">
-              24 Episodes
+              {episodes.length} Episodes
             </div>
           </div>
+        </div>
+        <div className="no-scrollbar flex h-14 flex-row items-center justify-start gap-2 overflow-auto px-5 py-3">
+          <Filter
+            active
+            icon={
+              <BookmarkFilledIcon color="currentColor" width={16} height={16} />
+            }
+            label="Bookmarks"
+          />
+
+          <div className="h-7 border border-white/20" />
+
+          <Filter active label={config.morning.title} />
+          <Filter label={config.endOfDay.title} />
+          <Filter label={config.weekly.title} />
+        </div>
+        <div>
+          {episodes.map((episode) => 
+            <EpisodeCard key={episode.id} episode={episode} toggleBookmark={toogleBookmark} />
+          )}
         </div>
       </div>
     </>
