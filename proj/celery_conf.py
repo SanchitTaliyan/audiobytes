@@ -25,11 +25,11 @@ celery_app.conf.task_default_durable = True
 
 celery_beats = {
     'print-at-8AM-6PM': {
-        'task': 'proj.tasks.create_episode',
+        'task': 'proj.tasks.create_daily_episode',
         'schedule': crontab(minute=0, hour='8,18'),  # Runs at 8 AM and 6 PM IST daily
     },
     'print-at-12PM-Tuesday': {
-        'task': 'proj.tasks.create_episode',
+        'task': 'proj.tasks.create_weekly_episode',
         'schedule': crontab(minute=0, hour=12, day_of_week='2'),  # Runs at 12 PM only on Tuesdays
     },
 }
