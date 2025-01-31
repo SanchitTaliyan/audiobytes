@@ -19,10 +19,10 @@ def create_episode(episode: EpisodeCreate, db: Session = Depends(get_db)):
 @api_router.get("/{episode_id}", response_model=EpisodeResponse)
 def get_episode(episode_id: int):
     query = text("SELECT * FROM episodes WHERE id = :episode_id")
-    episode = execute(query, params={"episode_id": episode_id})
-    if not episode:
+    episodes = execute(query, params={"episode_id": episode_id})
+    if len(episodes) == 0:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Episode not found")
-    return episode
+    return episodes[0]
 
 @api_router.get("/", response_model=list[EpisodeResponse])
 def list_episodes(
@@ -48,7 +48,8 @@ def list_episodes(
 @api_router.put("/{episode_id}", response_model=EpisodeResponse)
 def update_episode(episode_id: int, episode: EpisodeUpdate):
     query = text("SELECT * FROM episodes WHERE id = :episode_id")
-    existing_episode = execute(query, params={"episode_id": episode_id})
+    existing_episodes = execute(query, params={"episode_id": episode_id})
+    existing_episode = existing_episodes[0]
     if not existing_episode:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Episode not found")
     for key, value in episode.model_dump().items():
@@ -60,7 +61,8 @@ def update_episode(episode_id: int, episode: EpisodeUpdate):
 @api_router.delete("/{episode_id}")
 def delete_episode(episode_id: int):
     query = text("SELECT * FROM episodes WHERE id = :episode_id")
-    existing_episode = execute(query, params={"episode_id": episode_id})
+    existing_episodes = execute(query, params={"episode_id": episode_id})
+    existing_episode = existing_episodes[0]
     if not existing_episode:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Episode not found")
     query = text("DELETE FROM episodes WHERE id = :episode_id")
