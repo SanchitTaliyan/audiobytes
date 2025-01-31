@@ -56,7 +56,7 @@ def update_episode(episode_id: int, episode: EpisodeUpdate):
     print("episode update: ", episode.model_dump())
     for key, value in episode.model_dump().items():
         existing_episode[key] = value
-    query = text("UPDATE episodes SET title = :title, description = :description, duration = :duration, audio_link = :audio_link, is_bookmark = :is_bookmark, is_deleted = :is_deleted WHERE id = :episode_id")
+    query = text("UPDATE episodes SET title = :title, description = :description, duration = :duration, audio_link = :audio_link, is_bookmark = :is_bookmark, is_deleted = :is_deleted WHERE id = :id")
     execute(query, params=existing_episode)
     return existing_episode
 
