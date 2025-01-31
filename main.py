@@ -22,7 +22,8 @@ app.mount(
 )
 
 allowed_origins: list[str] = []
-allowed_origin_regex = r"https?://([a-zA-Z0-9-]+\.)*audiobyte\.com"
+# allowed_origin_regex = r"https?://([a-zA-Z0-9-]+\.)*audiobyte\.com"
+allowed_origin_regex = r"*"
 
 # Enable CORS for all origins on WebSocket routes
 app.add_middleware(
