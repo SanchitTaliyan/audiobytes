@@ -1,14 +1,12 @@
 import React from 'react';
-import { getRelativeDate, parseFloatToFixed } from '../utils/commonFunctions';
-import { BookmarkFilledIcon } from './icons/BookmarkFilledIcon';
-import { BookmarkIcon } from './icons/BookmarkIcon';
-import { PlayIcon } from './icons/PlayIcon';
+import { getRelativeDate, parseFloatToFixed } from 'utils/commonFunctions';
+import { BookmarkFilledIcon, BookmarkIcon, PlayIcon } from 'icons';
 import { format } from 'date-fns';
-import eod from '../assets/eod.png';
-import mid from '../assets/mid.png';
-import morning from '../assets/morning.png';
-import weekly from '../assets/weekly.png';
-import monthly from '../assets/monthly.png';
+import eod from 'assets/eod.png';
+import mid from 'assets/mid.png';
+import morning from 'assets/morning.png';
+import weekly from 'assets/weekly.png';
+import monthly from 'assets/monthly.png';
 
 const EpisodeCard = ({ episode, toggleBookmark }) => {
   const { title, description, duration, published_at, audio_link, is_bookmark, time_of_day } = episode;
