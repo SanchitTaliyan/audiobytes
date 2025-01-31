@@ -10,7 +10,7 @@ import morning from '../assets/morning.png';
 import weekly from '../assets/weekly.png';
 import monthly from '../assets/monthly.png';
 
-const EpisodeCard = ({ episode }) => {
+const EpisodeCard = ({ episode, toggleBookmark }) => {
   const { title, description, duration, published_at, audio_link, is_bookmark, time_of_day } = episode;
   let thumbnailSrc;
 
@@ -47,7 +47,9 @@ const EpisodeCard = ({ episode }) => {
             {/* <ProgressBar/> */}
             <div className='text-white text-sm leading-4'>{parseFloatToFixed(duration / 60)} m</div>
           </div>
-          {is_bookmark ? <BookmarkFilledIcon /> : <BookmarkIcon />}
+          <div className='cursor-pointer' onClick={() => toggleBookmark(episode.id, !is_bookmark)}>
+            {is_bookmark ? <BookmarkFilledIcon /> : <BookmarkIcon />}
+          </div>
         </div>
       </div>
     </div>
