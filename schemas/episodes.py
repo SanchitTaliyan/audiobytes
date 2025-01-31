@@ -32,11 +32,11 @@ class EpisodeResponse(EpisodeInDBBase):
     pass
 
 class EpisodeUpdate(BaseModel):
-    title: Optional[str]
-    description: Optional[str]
-    duration: Optional[int]
-    published_at: Optional[datetime]
-    audio_link: Optional[str]
-    is_bookmark: Optional[bool]
-    is_deleted: Optional[bool]
-    time_of_day: Optional[TimeOfDay]
+    title: Optional[str] = None
+    description: Optional[str] = None
+    duration: Optional[int] = None
+    published_at: Optional[datetime] = None
+    audio_link: Optional[str] = None
+    is_bookmark: Optional[bool] = None
+    is_deleted: Optional[bool] = None
+    time_of_day: Optional[TimeOfDay] = None
