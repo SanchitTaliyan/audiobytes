@@ -23,7 +23,9 @@ ENV PATH="/venv/bin:$PATH"
 COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
+COPY ./ .
+
 # Expose the required port
 EXPOSE 4000
 
-CMD ["bash", "-c", "cron"]
+ENTRYPOINT [ "python3", "run.py" ]
