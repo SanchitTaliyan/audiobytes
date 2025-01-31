@@ -25,6 +25,12 @@ class Config:
     db_password = os.getenv("DB_PASSWORD")
     db_url = f"postgresql://{db_user}:{db_password}@{db_host}/{db_name}"
 
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+    AWS_REGION_NAME = os.getenv("AWS_REGION_NAME")
+    AWS_S3_BUCKET_NAME = os.getenv("AWS_S3_BUCKET_NAME")
+    AWS_POLLY_VOICE_ID = os.getenv("AWS_POLLY_VOICE_ID")
+
     redis_client_collection: dict[str, redis.Redis] = {}
     @staticmethod
     def redis_client(REDIS_DATABASE=None):
