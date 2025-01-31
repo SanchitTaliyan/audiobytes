@@ -32,3 +32,9 @@ INSERT INTO episodes
     (title, description, duration, published_at, audio_link, is_bookmark, is_deleted, time_of_day)
 VALUES
     ('End of Day Wrap-Up', 'Summary of the days most important events.', 60, '2025-01-30 18:00:00+00', 'https://audiobyte.s3.amazonaws.com/audio/4ac766fb-c4f4-4efa-ad37-9613ab4e6595.mp3', TRUE, FALSE, 'ENDOFDAY');
+
+ALTER TYPE episode_time ADD VALUE 'ENDOFWEEK';
+
+ALTER TABLE episodes
+ADD COLUMN demo_flag BOOLEAN DEFAULT TRUE;
+

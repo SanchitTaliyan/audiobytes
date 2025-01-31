@@ -9,6 +9,7 @@ class TimeOfDay(PyEnum):
     MORNING = "MORNING"
     MIDDAY = "MIDDAY"
     ENDOFDAY = "ENDOFDAY"
+    ENFOFWEEK = "ENFOFWEEK"
 
 class Episode(Base):
     __tablename__ = "episodes"
@@ -22,6 +23,7 @@ class Episode(Base):
     is_bookmark = Column(Boolean, default=False)
     is_deleted = Column(Boolean, default=False)
     time_of_day: Column[Enum] = Column(Enum(*[enum.value for enum in TimeOfDay], name="episode_time"), nullable=False)
+    demo_flag = Column(Boolean, default=True)
 
     # Creating indexes for is_bookmark and time_of_day columns
     __table_args__ = (
