@@ -1,6 +1,9 @@
 from datetime import datetime
+from enum import Enum
 from pydantic import BaseModel, UUID4
 from typing import Optional
+
+from models.episodes import TimeOfDay
 
 __all__ = (
     "EpisodeCreate",
@@ -17,6 +20,7 @@ class EpisodeBase(BaseModel):
     audio_link: str
     is_bookmark: bool
     is_deleted: bool
+    time_of_day: TimeOfDay
 
 class EpisodeCreate(EpisodeBase):
     pass
@@ -37,3 +41,4 @@ class EpisodeUpdate(BaseModel):
     audio_link: Optional[str]
     is_bookmark: Optional[bool]
     is_deleted: Optional[bool]
+    time_of_day: Optional[TimeOfDay]
