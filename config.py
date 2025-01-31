@@ -86,7 +86,6 @@ class DatabaseManager:
                 session.rollback()
             raise e
         finally:
-            session.refresh()
             if session:
                 session.close() 
 
