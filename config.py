@@ -39,6 +39,7 @@ class Config:
     REDIS_HOST = os.getenv("REDIS_HOST")
     REDIS_PORT = os.getenv("REDIS_PORT")
     REDIS_DATABASE = os.getenv("REDIS_DATABASE")
+    OPENAI_TTS_VOICE = os.getenv("OPENAI_TTS_VOICE")
 
     openai_api_key = os.getenv("OPENAI_API_KEY")
     openai_organization_id = os.getenv("OPENAI_ORGANISATION_ID")

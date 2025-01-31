@@ -4,9 +4,9 @@ import pytz # type: ignore
 from sqlalchemy import text
 
 from config import db_manager
-from helpers.polly import convert_text_to_speech
+from helpers.tts import convert_text_to_speech
 from models.episodes import TimeOfDay
-from proj.helper import get_current_date_ist, get_time_of_day
+# from proj.helper import get_current_date_ist, get_time_of_day
 from schemas.episodes import EpisodeCreate
 from schemas.text_to_speech import TextToSpeechRegisterRequest
 
