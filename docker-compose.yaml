@@ -45,10 +45,9 @@ services:
     build: .
     image: audiobyte
     container_name: audiobyte_celery_beat
-    command: /venv/bin/celery -A proj beat -l INFO --logfile=/home/logs/celery_beat.log
+    command: /venv/bin/celery -A proj beat
     volumes:
       - celery_data:/data
-      - ./logs:/home/logs
     networks:
       - audiobyte_network
     depends_on:
@@ -69,7 +68,6 @@ services:
     command: python celery_setup.py
     volumes:
       - celery_data:/data
-      - ./logs:/home/logs
     networks:
       - audiobyte_network
     depends_on:
