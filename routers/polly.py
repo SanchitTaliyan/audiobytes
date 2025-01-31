@@ -69,7 +69,7 @@ def convert_text_to_speech(
     
 
 if __name__ == "__main__":
-    text = "Hello! This is a test."
+    text = "Summary of the day's most important events."
     response = convert_text_to_speech(
         body=TextToSpeechRegisterRequest(text=text)
     )

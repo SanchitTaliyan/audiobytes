@@ -27,8 +27,6 @@ class EpisodeCreate(EpisodeBase):
     
 class EpisodeInDBBase(EpisodeBase):
     id: int
-    created_at: datetime
-    updated_at: Optional[datetime] = None
 
 class EpisodeResponse(EpisodeInDBBase):
     pass
