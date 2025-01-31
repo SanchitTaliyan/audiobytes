@@ -2,7 +2,7 @@ import EndOfDayImg from "assets/eod.png";
 import MidImg from "assets/mid.png";
 import MorningImg from "assets/morning.png";
 import WeeklyImg from "assets/weekly.png";
-import { isToday, isYesterday } from "date-fns";
+import { compareDesc, format, isToday, isYesterday } from "date-fns";
 import { BookmarkFilledIcon, CloseIcon, PlayIcon } from "icons";
 import { keyBy } from "lodash-es";
 import { useEffect, useState } from "react";
@@ -59,20 +59,25 @@ const intialFilters = {
  * @property {boolean} today
  */
 
-/** @type {Record<string, Episode>} */
-const initialEpisodesList = {};
+/** @type {Episode[]} */
+const initialEpisodesList = [];
 
 export function App() {
   const [episodesList, setEpisodesList] = useState(initialEpisodesList);
   const [filters, setFilters] = useState(intialFilters);
 
-  const toogleBookmark = async (id, bookmark) => {
+  const toogleBookmark = async (episode) => {
     try {
       const updatedEpisode = await episodesService.toogleBookmark({
-        episodeId: id,
-        bookmark,
+        episodeId: episode.id,
+        bookmark: !episode.is_bookmark,
       });
-      setEpisodesList((prev) => ({ ...prev, [id]: updatedEpisode }));
+
+      const nextEpisodesList = [...episodesList];
+      const i = nextEpisodesList.indexOf(episode);
+      nextEpisodesList[i] = updatedEpisode;
+
+      setEpisodesList(nextEpisodesList);
     } catch (error) {
       console.log("Failed to update episode bookmark", error);
     }
@@ -86,10 +91,13 @@ export function App() {
     const fetchAllEpisodes = async () => {
       try {
         const episodesList = await episodesService.getAllEpisodes();
+        episodesList.sort((a, b) =>
+          compareDesc(a.published_at, b.published_at),
+        );
         episodesList.forEach((ep) => {
-          ep.today = isToday(ep.published_at) || isYesterday(ep.published_at);
+          ep.today = isToday(ep.published_at);
         });
-        setEpisodesList(keyBy(episodesList, "id"));
+        setEpisodesList(episodesList);
       } catch (error) {
         console.log(error);
       }
@@ -97,7 +105,7 @@ export function App() {
     fetchAllEpisodes();
   }, []);
 
-  const episodes = Object.values(episodesList).filter((episode) => {
+  const episodes = episodesList.filter((episode) => {
     const { bookmark, morning, eod, weekly } = filters;
     if (bookmark && !episode.is_bookmark) return false;
 
@@ -113,7 +121,7 @@ export function App() {
   });
 
   // ignore filters for today's episodes
-  const todayEpisodes = Object.values(episodesList).filter((ep) => ep.today);
+  const todayEpisodes = episodesList.filter((ep) => ep.today);
 
   return (
     <>
@@ -184,7 +192,7 @@ export function App() {
           <EpisodeCard
             key={episode.id}
             episode={episode}
-            toggleBookmark={toogleBookmark}
+            toggleBookmark={() => toogleBookmark(episode)}
           />
         ))}
       </div>
@@ -211,6 +219,8 @@ function Filter({ active, icon, label, value, onFilterClick }) {
 function Poster({ episode }) {
   const { color, img } = config[episode.time_of_day];
 
+  const { isSelected, isPlaying } = useEpisodePlayer(episode);
+
   return (
     <div
       style={{ "--color": color }}
@@ -229,9 +239,9 @@ function Poster({ episode }) {
           <div className="flex h-[89px] flex-col items-start justify-start gap-1 self-stretch">
             <div className="flex items-start justify-start gap-[3.50px]">
               <div className="text-[11px] font-semibold uppercase leading-[13px] tracking-tight text-white/50">
-                Resume
+                {isPlaying ? "Pause" : isSelected ? "Resume" : "Start"}
               </div>
-              <div className="text-[11px] uppercase leading-[13px] tracking-tight text-[#c2c2c2]">
+              <div className="text-[11px] uppercase leading-[13px] tracking-tight text-white/50">
                 ·
               </div>
               <div className="text-[11px] font-semibold uppercase leading-[13px] tracking-tight text-white/50">
@@ -240,7 +250,7 @@ function Poster({ episode }) {
             </div>
             <div className="flex h-[72px] flex-col items-start justify-start gap-1 self-stretch">
               <div className="self-stretch text-[15px] font-semibold leading-[18px] text-white opacity-90">
-                Start Your Day: Morning Insights - 31 Jan 2025
+                {episode.title} | {format(episode.published_at, "dd MMM yyyy")}
               </div>
               <div className="line-clamp-2 self-stretch text-[13px] font-normal leading-none text-white/60">
                 Discover the fascinating world of feline sleep patterns and
@@ -267,8 +277,10 @@ function EpisodePlayer({ episode }) {
   const { color } = config[episode.time_of_day];
 
   const { pausePlayer, startPlayer } = useAudioPlayer();
-  const { isSelected, isPlaying, seekBarWidth, durationLabel } =
-    useEpisodePlayer({ episode, seekTrackWidth });
+  const { isSelected, isPlaying, progress, durationLabel } =
+    useEpisodePlayer(episode);
+
+  const seekBarWidth = progress * seekTrackWidth;
 
   return (
     <div

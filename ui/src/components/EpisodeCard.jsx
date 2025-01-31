@@ -54,10 +54,7 @@ const EpisodeCard = ({ episode, toggleBookmark }) => {
             {getRelativeDate(published_at)}
           </div>
           <EpisodePlayer episode={episode} />
-          <div
-            className="cursor-pointer"
-            onClick={() => toggleBookmark(episode.id, !is_bookmark)}
-          >
+          <div className="cursor-pointer" onClick={() => toggleBookmark()}>
             {is_bookmark ? <BookmarkFilledIcon /> : <BookmarkIcon />}
           </div>
         </div>
@@ -73,8 +70,10 @@ function EpisodePlayer({ episode }) {
   const color = "#FFFFFF";
 
   const { pausePlayer, startPlayer } = useAudioPlayer();
-  const { isSelected, isPlaying, seekBarWidth, durationLabel } =
-    useEpisodePlayer({ episode, seekTrackWidth });
+  const { isSelected, isPlaying, progress, durationLabel } =
+    useEpisodePlayer(episode);
+
+  const seekBarWidth = progress * seekTrackWidth;
 
   return (
     <div

@@ -749,11 +749,6 @@ img, video {
   color: rgb(117 117 117 / var(--tw-text-opacity, 1));
 }
 
-.text-\[\#c2c2c2\] {
-  --tw-text-opacity: 1;
-  color: rgb(194 194 194 / var(--tw-text-opacity, 1));
-}
-
 .text-\[var\(--color\)\] {
   color: var(--color);
 }
@@ -816,4 +811,4 @@ img, video {
 body {
   background-color: #0a0a0a;
 }
-/*# sourceMappingURL=index.1dc4d0aa.css.map */
+/*# sourceMappingURL=index.b5b70659.css.map */

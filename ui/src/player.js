@@ -66,7 +66,7 @@ export function useAudioPlayer() {
   return { player, startPlayer, pausePlayer };
 }
 
-export function useEpisodePlayer({ episode, seekTrackWidth }) {
+export function useEpisodePlayer(episode) {
   const episdeDuration = episode.duration;
 
   const { player } = useAudioPlayer();
@@ -77,7 +77,7 @@ export function useEpisodePlayer({ episode, seekTrackWidth }) {
         isSelected: false,
         isPlaying: false,
         duration: episdeDuration,
-        seekBarWidth: 0,
+        progress: 0,
       };
 
     const isSelected = player.episode === episode;
@@ -85,13 +85,13 @@ export function useEpisodePlayer({ episode, seekTrackWidth }) {
 
     const duration = isSelected ? player.duration || 0 : episdeDuration;
 
-    const seekBarWidth = (player.currentTime / duration) * seekTrackWidth;
+    const progress = player.currentTime / duration;
 
     return {
       isSelected,
       isPlaying,
       duration,
-      seekBarWidth,
+      progress,
     };
   }, [player]);
 
