@@ -37,7 +37,6 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
       - rabbitmq_log:/var/log/rabbitmq
-      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
     networks:
       - audiobyte_network
     restart: always
@@ -89,6 +88,7 @@ volumes:
   backend_logs:
   celery_data:
   rabbitmq_data:
+  rabbitmq_log:
   restart_script:
     driver: local
 
