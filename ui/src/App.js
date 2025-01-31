@@ -1,12 +1,10 @@
 import { keyBy } from 'lodash-es';
 import { useEffect, useState } from 'react';
-import EndOfDayImg from "./assets/eod.png";
-import MorningImg from "./assets/morning.png";
-import WeeklyImg from "./assets/weekly.png";
+import EndOfDayImg from "assets/eod.png";
+import MorningImg from "assets/morning.png";
+import WeeklyImg from "assets/weekly.png";
 import EpisodeCard from './components/EpisodeCard';
-import { BookmarkFilledIcon } from "./components/icons/BookmarkFilledIcon";
-import { CloseIcon } from "./components/icons/CloseIcon";
-import { PlayIcon } from "./components/icons/PlayIcon";
+import { BookmarkFilledIcon, CloseIcon, PlayIcon } from "icons";
 import episodesService from './services/episodesService';
 
 const config = {
