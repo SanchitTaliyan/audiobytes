@@ -53,9 +53,9 @@ def get_llm(model_name: str):
 
 
     if openai_api_key and openai_organization_id:
-        openai_api_key = SecretStr(openai_api_key)
+        openai_api_key_secret = SecretStr(openai_api_key)
         return ChatOpenAI(
-            api_key=openai_api_key,
+            api_key=openai_api_key_secret,
             organization=openai_organization_id,
             model=model_name,
             temperature=0,
