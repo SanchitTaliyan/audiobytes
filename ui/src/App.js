@@ -4,13 +4,13 @@ import MorningImg from "assets/morning.png";
 import WeeklyImg from "assets/weekly.png";
 import { isToday, isYesterday } from "date-fns";
 import { BookmarkFilledIcon, CloseIcon, PlayIcon } from "icons";
-import { atom, getDefaultStore, useAtom } from "jotai";
 import { keyBy } from "lodash-es";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import EpisodeCard from "./components/EpisodeCard";
 import { PauseIcon } from "./components/icons";
 import { EPISODE_TYPE } from "./constants/enums";
 import episodesService from "./services/episodesService";
+import { useAudioPlayer, useEpisodePlayer } from "./player";
 
 const config = {
   [EPISODE_TYPE.MORNING]: {
@@ -264,38 +264,11 @@ function Poster({ episode }) {
 function EpisodePlayer({ episode }) {
   const seekTrackWidth = 25;
 
-  const episdeDuration = episode.duration;
   const { color } = config[episode.time_of_day];
 
-  const { player, pausePlayer, startPlayer } = usePlayer();
-  const { isSelected, isPlaying, duration, seekBarWidth } = useMemo(() => {
-    if (!player)
-      return {
-        isSelected: false,
-        isPlaying: false,
-        duration: episdeDuration,
-        seekBarWidth: 0,
-      };
-
-    const isSelected = player.episode === episode;
-    const isPlaying = isSelected && !player.paused;
-
-    const duration = isSelected ? player.duration || 0 : episdeDuration;
-
-    const seekBarWidth = (player.currentTime / duration) * seekTrackWidth;
-
-    return {
-      isSelected,
-      isPlaying,
-      duration,
-      seekBarWidth,
-    };
-  }, [player]);
-
-  const durationLabel =
-    duration < 60 ? `${duration} s` : `${Math.floor(duration / 60)} m`;
-
-  console.log(duration);
+  const { pausePlayer, startPlayer } = useAudioPlayer();
+  const { isSelected, isPlaying, seekBarWidth, durationLabel } =
+    useEpisodePlayer({ episode, seekTrackWidth });
 
   return (
     <div
@@ -349,69 +322,4 @@ function EpisodePlayer({ episode }) {
 
 function cx(...args) {
   return args.filter(Boolean).join(" ");
-}
-
-const store = getDefaultStore();
-
-/**
- * @typedef {Object} Player
- * @property {Episode} episode
- * @property {number} duration
- * @property {number} currentTime
- * @property {boolean} paused
- */
-/** @type {Player|undefined} */
-let initialPlayer;
-const playerAtom = atom(initialPlayer);
-
-const audioCtx = new Audio();
-
-audioCtx.ontimeupdate = () => {
-  const player = store.get(playerAtom);
-  if (!player) return;
-  const currentTime = Math.round(audioCtx.currentTime);
-  store.set(playerAtom, { ...player, currentTime });
-};
-
-audioCtx.onpause = () => {
-  const player = store.get(playerAtom);
-  if (!player) return;
-  store.set(playerAtom, { ...player, paused: true });
-};
-
-audioCtx.onplay = () => {
-  const player = store.get(playerAtom);
-  if (!player) return;
-  store.set(playerAtom, { ...player, paused: false });
-};
-
-audioCtx.ondurationchange = () => {
-  const player = store.get(playerAtom);
-  if (!player) return;
-  const duration = Math.floor(audioCtx.duration);
-  store.set(playerAtom, { ...player, duration });
-};
-
-audioCtx.onended = () => {
-  const player = store.get(playerAtom);
-  if (!player) return;
-  store.set(playerAtom, undefined);
-};
-
-function usePlayer() {
-  const [player, setPlayer] = useAtom(playerAtom);
-
-  const startPlayer = (episode) => {
-    if (!player || player.episode !== episode) {
-      setPlayer({ episode, currentTime: 0 });
-      audioCtx.src = episode.audio_link;
-    }
-    audioCtx.play();
-  };
-
-  const pausePlayer = () => {
-    audioCtx.pause();
-  };
-
-  return { player, startPlayer, pausePlayer };
 }

@@ -8013,7 +8013,7 @@ var $fb48a2090b6ba271$export$2e2bcd8739ae039 = nodeUtil;
 
 var $78c1148b7f891536$exports = {};
 
-(parcelRequire("aKzDW")).register(new URL("", import.meta.url).toString(), JSON.parse("[\"jQuGZ\",\"index.e6d97579.js\",\"57jz1\",\"eod.3485c848.png\",\"buvMB\",\"mid.54232a3b.png\",\"aTc9C\",\"morning.afb37360.png\",\"h6kuW\",\"weekly.965bb3d4.png\",\"i6eb8\",\"monthly.6a852725.png\",\"k4JV7\",\"index.6d92f972.css\"]"));
+(parcelRequire("aKzDW")).register(new URL("", import.meta.url).toString(), JSON.parse("[\"jQuGZ\",\"index.0bc1288e.js\",\"57jz1\",\"eod.3485c848.png\",\"buvMB\",\"mid.54232a3b.png\",\"aTc9C\",\"morning.afb37360.png\",\"h6kuW\",\"weekly.965bb3d4.png\",\"i6eb8\",\"monthly.6a852725.png\",\"k4JV7\",\"index.1dc4d0aa.css\"]"));
 
 var $17b288f07ec57b56$exports = {};
 'use strict';
@@ -25858,807 +25858,6 @@ const $085bf225faae2cf4$export$176bed861e17bd9a = ({ color: color = '#FFFFFF', h
 
 
 
-var $12c15ab479c77cab$exports = {};
-'use strict';
-var $3574c3bf85e5f792$exports = {};
-
-$parcel$export($3574c3bf85e5f792$exports, "atom", () => $3574c3bf85e5f792$export$5fb5cc0d078610b, (v) => $3574c3bf85e5f792$export$5fb5cc0d078610b = v);
-$parcel$export($3574c3bf85e5f792$exports, "createStore", () => $3574c3bf85e5f792$export$f51a9068ac82ea43, (v) => $3574c3bf85e5f792$export$f51a9068ac82ea43 = v);
-$parcel$export($3574c3bf85e5f792$exports, "getDefaultStore", () => $3574c3bf85e5f792$export$39b2e4393dfcb8aa, (v) => $3574c3bf85e5f792$export$39b2e4393dfcb8aa = v);
-var $3574c3bf85e5f792$export$5fb5cc0d078610b;
-var $3574c3bf85e5f792$export$f51a9068ac82ea43;
-var $3574c3bf85e5f792$export$39b2e4393dfcb8aa;
-'use strict';
-var $3574c3bf85e5f792$var$keyCount = 0;
-function $3574c3bf85e5f792$var$atom(read, write) {
-    var key = "atom" + ++$3574c3bf85e5f792$var$keyCount;
-    var config = {
-        toString: function toString() {
-            return key;
-        }
-    };
-    if (typeof read === 'function') config.read = read;
-    else {
-        config.init = read;
-        config.read = $3574c3bf85e5f792$var$defaultRead;
-        config.write = $3574c3bf85e5f792$var$defaultWrite;
-    }
-    if (write) config.write = write;
-    return config;
-}
-function $3574c3bf85e5f792$var$defaultRead(get) {
-    return get(this);
-}
-function $3574c3bf85e5f792$var$defaultWrite(get, set, arg) {
-    return set(this, typeof arg === 'function' ? arg(get(this)) : arg);
-}
-function $3574c3bf85e5f792$var$_arrayLikeToArray(r, a) {
-    (null == a || a > r.length) && (a = r.length);
-    for(var e = 0, n = Array(a); e < a; e++)n[e] = r[e];
-    return n;
-}
-function $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(r, e) {
-    var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
-    if (t) return (t = t.call(r)).next.bind(t);
-    if (Array.isArray(r) || (t = $3574c3bf85e5f792$var$_unsupportedIterableToArray(r)) || e) {
-        t && (r = t);
-        var o = 0;
-        return function() {
-            return o >= r.length ? {
-                done: true
-            } : {
-                done: false,
-                value: r[o++]
-            };
-        };
-    }
-    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function $3574c3bf85e5f792$var$_unsupportedIterableToArray(r, a) {
-    if (r) {
-        if ("string" == typeof r) return $3574c3bf85e5f792$var$_arrayLikeToArray(r, a);
-        var t = ({}).toString.call(r).slice(8, -1);
-        return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? $3574c3bf85e5f792$var$_arrayLikeToArray(r, a) : undefined;
-    }
-}
-var $3574c3bf85e5f792$var$isSelfAtom = function isSelfAtom(atom, a) {
-    return atom.unstable_is ? atom.unstable_is(a) : a === atom;
-};
-var $3574c3bf85e5f792$var$hasInitialValue = function hasInitialValue(atom) {
-    return 'init' in atom;
-};
-var $3574c3bf85e5f792$var$isActuallyWritableAtom = function isActuallyWritableAtom(atom) {
-    return !!atom.write;
-};
-var $3574c3bf85e5f792$var$cancelablePromiseMap = new WeakMap();
-var $3574c3bf85e5f792$var$isPendingPromise = function isPendingPromise(value) {
-    var _cancelablePromiseMap;
-    return $3574c3bf85e5f792$var$isPromiseLike(value) && !((_cancelablePromiseMap = $3574c3bf85e5f792$var$cancelablePromiseMap.get(value)) != null && _cancelablePromiseMap[1]);
-};
-var $3574c3bf85e5f792$var$cancelPromise = function cancelPromise(promise, nextValue) {
-    var promiseState = $3574c3bf85e5f792$var$cancelablePromiseMap.get(promise);
-    if (promiseState) {
-        promiseState[1] = true;
-        promiseState[0].forEach(function(fn) {
-            return fn(nextValue);
-        });
-    }
-};
-var $3574c3bf85e5f792$var$patchPromiseForCancelability = function patchPromiseForCancelability(promise) {
-    if ($3574c3bf85e5f792$var$cancelablePromiseMap.has(promise)) return;
-    var promiseState = [
-        new Set(),
-        false
-    ];
-    $3574c3bf85e5f792$var$cancelablePromiseMap.set(promise, promiseState);
-    var settle = function settle() {
-        promiseState[1] = true;
-    };
-    promise.then(settle, settle);
-    promise.onCancel = function(fn) {
-        promiseState[0].add(fn);
-    };
-};
-var $3574c3bf85e5f792$var$isPromiseLike = function isPromiseLike(p) {
-    return typeof (p == null ? undefined : p.then) === 'function';
-};
-var $3574c3bf85e5f792$var$isAtomStateInitialized = function isAtomStateInitialized(atomState) {
-    return 'v' in atomState || 'e' in atomState;
-};
-var $3574c3bf85e5f792$var$returnAtomValue = function returnAtomValue(atomState) {
-    if ('e' in atomState) throw atomState.e;
-    return atomState.v;
-};
-var $3574c3bf85e5f792$var$addPendingPromiseToDependency = function addPendingPromiseToDependency(atom, promise, dependencyAtomState) {
-    if (!dependencyAtomState.p.has(atom)) {
-        dependencyAtomState.p.add(atom);
-        promise.then(function() {
-            dependencyAtomState.p.delete(atom);
-        }, function() {
-            dependencyAtomState.p.delete(atom);
-        });
-    }
-};
-var $3574c3bf85e5f792$var$addDependency = function addDependency(atom, atomState, a, aState) {
-    var _aState$m;
-    atomState.d.set(a, aState.n);
-    if ($3574c3bf85e5f792$var$isPendingPromise(atomState.v)) $3574c3bf85e5f792$var$addPendingPromiseToDependency(atom, atomState.v, aState);
-    (_aState$m = aState.m) == null || _aState$m.t.add(atom);
-};
-var $3574c3bf85e5f792$var$INTERNAL_flushStoreHook = Symbol.for('JOTAI.EXPERIMENTAL.FLUSHSTOREHOOK');
-var $3574c3bf85e5f792$var$_buildStore = function buildStore() {
-    for(var _len = arguments.length, storeArgs = new Array(_len), _key = 0; _key < _len; _key++)storeArgs[_key] = arguments[_key];
-    var getAtomState = storeArgs[0], setAtomState = storeArgs[1], atomRead = storeArgs[2], atomWrite = storeArgs[3], atomOnInit = storeArgs[4], atomOnMount = storeArgs[5];
-    var ensureAtomState = function ensureAtomState(atom) {
-        var atomState = getAtomState(atom);
-        if (!atomState) {
-            atomState = {
-                d: new Map(),
-                p: new Set(),
-                n: 0
-            };
-            setAtomState(atom, atomState);
-            atomOnInit == null || atomOnInit(atom, store);
-        }
-        return atomState;
-    };
-    var invalidatedAtoms = new WeakMap();
-    var changedAtoms = new Map();
-    var unmountCallbacks = new Set();
-    var mountCallbacks = new Set();
-    var flushCallbacks = function flushCallbacks() {
-        var errors = [];
-        var call = function call(fn) {
-            try {
-                fn();
-            } catch (e) {
-                errors.push(e);
-            }
-        };
-        var _loop = function _loop() {
-            var _INTERNAL_flushStoreH, _ref;
-            (_INTERNAL_flushStoreH = (_ref = store)[$3574c3bf85e5f792$var$INTERNAL_flushStoreHook]) == null || _INTERNAL_flushStoreH.call(_ref);
-            var callbacks = new Set();
-            var add = callbacks.add.bind(callbacks);
-            changedAtoms.forEach(function(atomState) {
-                var _atomState$m;
-                return (_atomState$m = atomState.m) == null ? undefined : _atomState$m.l.forEach(add);
-            });
-            changedAtoms.clear();
-            unmountCallbacks.forEach(add);
-            unmountCallbacks.clear();
-            mountCallbacks.forEach(add);
-            mountCallbacks.clear();
-            callbacks.forEach(call);
-            if (changedAtoms.size) recomputeInvalidatedAtoms();
-        };
-        do _loop();
-        while (changedAtoms.size || unmountCallbacks.size || mountCallbacks.size);
-        if (errors.length) throw errors[0];
-    };
-    var setAtomStateValueOrPromise = function setAtomStateValueOrPromise(atom, atomState, valueOrPromise) {
-        var hasPrevValue = 'v' in atomState;
-        var prevValue = atomState.v;
-        var pendingPromise = $3574c3bf85e5f792$var$isPendingPromise(atomState.v) ? atomState.v : null;
-        if ($3574c3bf85e5f792$var$isPromiseLike(valueOrPromise)) {
-            $3574c3bf85e5f792$var$patchPromiseForCancelability(valueOrPromise);
-            for(var _iterator = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(atomState.d.keys()), _step; !(_step = _iterator()).done;){
-                var a = _step.value;
-                $3574c3bf85e5f792$var$addPendingPromiseToDependency(atom, valueOrPromise, ensureAtomState(a));
-            }
-            atomState.v = valueOrPromise;
-        } else atomState.v = valueOrPromise;
-        delete atomState.e;
-        if (!hasPrevValue || !Object.is(prevValue, atomState.v)) {
-            ++atomState.n;
-            if (pendingPromise) $3574c3bf85e5f792$var$cancelPromise(pendingPromise, valueOrPromise);
-        }
-    };
-    var _readAtomState = function readAtomState(atom) {
-        var atomState = ensureAtomState(atom);
-        if ($3574c3bf85e5f792$var$isAtomStateInitialized(atomState)) {
-            if (atomState.m && invalidatedAtoms.get(atom) !== atomState.n) return atomState;
-            if (Array.from(atomState.d).every(function(_ref2) {
-                var a = _ref2[0], n = _ref2[1];
-                return _readAtomState(a).n === n;
-            })) return atomState;
-        }
-        atomState.d.clear();
-        var isSync = true;
-        var mountDependenciesIfAsync = function mountDependenciesIfAsync() {
-            if (atomState.m) {
-                mountDependencies(atom, atomState);
-                recomputeInvalidatedAtoms();
-                flushCallbacks();
-            }
-        };
-        var getter = function getter(a) {
-            if ($3574c3bf85e5f792$var$isSelfAtom(atom, a)) {
-                var _aState = ensureAtomState(a);
-                if (!$3574c3bf85e5f792$var$isAtomStateInitialized(_aState)) {
-                    if ($3574c3bf85e5f792$var$hasInitialValue(a)) setAtomStateValueOrPromise(a, _aState, a.init);
-                    else throw new Error('no atom init');
-                }
-                return $3574c3bf85e5f792$var$returnAtomValue(_aState);
-            }
-            var aState = _readAtomState(a);
-            try {
-                return $3574c3bf85e5f792$var$returnAtomValue(aState);
-            } finally{
-                $3574c3bf85e5f792$var$addDependency(atom, atomState, a, aState);
-                if (!isSync) mountDependenciesIfAsync();
-            }
-        };
-        var controller;
-        var setSelf;
-        var options = {
-            get signal () {
-                if (!controller) controller = new AbortController();
-                return controller.signal;
-            },
-            get setSelf () {
-                if (!setSelf && $3574c3bf85e5f792$var$isActuallyWritableAtom(atom)) setSelf = function setSelf() {
-                    if (!isSync) {
-                        for(var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++)args[_key2] = arguments[_key2];
-                        return writeAtom.apply(undefined, [
-                            atom
-                        ].concat(args));
-                    }
-                };
-                return setSelf;
-            }
-        };
-        try {
-            var valueOrPromise = atomRead(atom, getter, options);
-            setAtomStateValueOrPromise(atom, atomState, valueOrPromise);
-            if ($3574c3bf85e5f792$var$isPromiseLike(valueOrPromise)) {
-                valueOrPromise.onCancel == null || valueOrPromise.onCancel(function() {
-                    var _controller;
-                    return (_controller = controller) == null ? void 0 : _controller.abort();
-                });
-                valueOrPromise.then(mountDependenciesIfAsync, mountDependenciesIfAsync);
-            }
-            return atomState;
-        } catch (error) {
-            delete atomState.v;
-            atomState.e = error;
-            ++atomState.n;
-            return atomState;
-        } finally{
-            isSync = false;
-        }
-    };
-    var readAtom = function readAtom(atom) {
-        return $3574c3bf85e5f792$var$returnAtomValue(_readAtomState(atom));
-    };
-    var getMountedOrPendingDependents = function getMountedOrPendingDependents(atomState) {
-        var dependents = new Map();
-        for(var _iterator2 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(((_atomState$m2 = atomState.m) == null ? undefined : _atomState$m2.t) || []), _step2; !(_step2 = _iterator2()).done;){
-            var _atomState$m2;
-            var a = _step2.value;
-            var aState = ensureAtomState(a);
-            if (aState.m) dependents.set(a, aState);
-        }
-        for(var _iterator3 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(atomState.p), _step3; !(_step3 = _iterator3()).done;){
-            var atomWithPendingPromise = _step3.value;
-            dependents.set(atomWithPendingPromise, ensureAtomState(atomWithPendingPromise));
-        }
-        return dependents;
-    };
-    var invalidateDependents = function invalidateDependents(atomState) {
-        var stack = [
-            atomState
-        ];
-        while(stack.length){
-            var aState = stack.pop();
-            for(var _iterator4 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(getMountedOrPendingDependents(aState)), _step4; !(_step4 = _iterator4()).done;){
-                var _step4$value = _step4.value, d = _step4$value[0], s = _step4$value[1];
-                invalidatedAtoms.set(d, s.n);
-                stack.push(s);
-            }
-        }
-    };
-    var recomputeInvalidatedAtoms = function recomputeInvalidatedAtoms() {
-        var topSortedReversed = [];
-        var visiting = new WeakSet();
-        var visited = new WeakSet();
-        var stack = Array.from(changedAtoms);
-        while(stack.length){
-            var _ref3 = stack[stack.length - 1], a = _ref3[0], aState = _ref3[1];
-            if (visited.has(a)) {
-                stack.pop();
-                continue;
-            }
-            if (visiting.has(a)) {
-                if (invalidatedAtoms.get(a) === aState.n) topSortedReversed.push([
-                    a,
-                    aState,
-                    aState.n
-                ]);
-                else {
-                    invalidatedAtoms.delete(a);
-                    changedAtoms.set(a, aState);
-                }
-                visited.add(a);
-                stack.pop();
-                continue;
-            }
-            visiting.add(a);
-            for(var _iterator5 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(getMountedOrPendingDependents(aState)), _step5; !(_step5 = _iterator5()).done;){
-                var _step5$value = _step5.value, d = _step5$value[0], s = _step5$value[1];
-                if (!visiting.has(d)) stack.push([
-                    d,
-                    s
-                ]);
-            }
-        }
-        for(var i = topSortedReversed.length - 1; i >= 0; --i){
-            var _ref4 = topSortedReversed[i], _a = _ref4[0], _aState2 = _ref4[1], prevEpochNumber = _ref4[2];
-            var hasChangedDeps = false;
-            for(var _iterator6 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(_aState2.d.keys()), _step6; !(_step6 = _iterator6()).done;){
-                var dep = _step6.value;
-                if (dep !== _a && changedAtoms.has(dep)) {
-                    hasChangedDeps = true;
-                    break;
-                }
-            }
-            if (hasChangedDeps) {
-                _readAtomState(_a);
-                mountDependencies(_a, _aState2);
-                if (prevEpochNumber !== _aState2.n) {
-                    changedAtoms.set(_a, _aState2);
-                    _aState2.u == null || _aState2.u();
-                }
-            }
-            invalidatedAtoms.delete(_a);
-        }
-    };
-    var _writeAtomState = function writeAtomState(atom) {
-        var isSync = true;
-        var getter = function getter(a) {
-            return $3574c3bf85e5f792$var$returnAtomValue(_readAtomState(a));
-        };
-        var setter = function setter(a) {
-            var aState = ensureAtomState(a);
-            try {
-                for(var _len4 = arguments.length, args = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++)args[_key4 - 1] = arguments[_key4];
-                if ($3574c3bf85e5f792$var$isSelfAtom(atom, a)) {
-                    if (!$3574c3bf85e5f792$var$hasInitialValue(a)) throw new Error('atom not writable');
-                    var prevEpochNumber = aState.n;
-                    var v = args[0];
-                    setAtomStateValueOrPromise(a, aState, v);
-                    mountDependencies(a, aState);
-                    if (prevEpochNumber !== aState.n) {
-                        changedAtoms.set(a, aState);
-                        aState.u == null || aState.u();
-                        invalidateDependents(aState);
-                    }
-                    return undefined;
-                } else return _writeAtomState.apply(void 0, [
-                    a
-                ].concat(args));
-            } finally{
-                if (!isSync) {
-                    recomputeInvalidatedAtoms();
-                    flushCallbacks();
-                }
-            }
-        };
-        try {
-            for(var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++)args[_key3 - 1] = arguments[_key3];
-            return atomWrite.apply(void 0, [
-                atom,
-                getter,
-                setter
-            ].concat(args));
-        } finally{
-            isSync = false;
-        }
-    };
-    var writeAtom = function writeAtom(atom) {
-        try {
-            for(var _len5 = arguments.length, args = new Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++)args[_key5 - 1] = arguments[_key5];
-            return _writeAtomState.apply(void 0, [
-                atom
-            ].concat(args));
-        } finally{
-            recomputeInvalidatedAtoms();
-            flushCallbacks();
-        }
-    };
-    var mountDependencies = function mountDependencies(atom, atomState) {
-        if (atomState.m && !$3574c3bf85e5f792$var$isPendingPromise(atomState.v)) {
-            for(var _iterator7 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(atomState.d), _step7; !(_step7 = _iterator7()).done;){
-                var _step7$value = _step7.value, a = _step7$value[0], n = _step7$value[1];
-                if (!atomState.m.d.has(a)) {
-                    var aState = ensureAtomState(a);
-                    var aMounted = _mountAtom(a, aState);
-                    aMounted.t.add(atom);
-                    atomState.m.d.add(a);
-                    if (n !== aState.n) {
-                        changedAtoms.set(a, aState);
-                        aState.u == null || aState.u();
-                        invalidateDependents(aState);
-                    }
-                }
-            }
-            for(var _iterator8 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(atomState.m.d || []), _step8; !(_step8 = _iterator8()).done;){
-                var _a2 = _step8.value;
-                if (!atomState.d.has(_a2)) {
-                    atomState.m.d.delete(_a2);
-                    var _aMounted = _unmountAtom(_a2, ensureAtomState(_a2));
-                    _aMounted == null || _aMounted.t.delete(atom);
-                }
-            }
-        }
-    };
-    var _mountAtom = function mountAtom(atom, atomState) {
-        if (!atomState.m) {
-            _readAtomState(atom);
-            for(var _iterator9 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(atomState.d.keys()), _step9; !(_step9 = _iterator9()).done;){
-                var a = _step9.value;
-                var aMounted = _mountAtom(a, ensureAtomState(a));
-                aMounted.t.add(atom);
-            }
-            atomState.m = {
-                l: new Set(),
-                d: new Set(atomState.d.keys()),
-                t: new Set()
-            };
-            atomState.h == null || atomState.h();
-            if ($3574c3bf85e5f792$var$isActuallyWritableAtom(atom)) {
-                var mounted = atomState.m;
-                var processOnMount = function processOnMount() {
-                    var isSync = true;
-                    var setAtom = function setAtom() {
-                        try {
-                            for(var _len6 = arguments.length, args = new Array(_len6), _key6 = 0; _key6 < _len6; _key6++)args[_key6] = arguments[_key6];
-                            return _writeAtomState.apply(void 0, [
-                                atom
-                            ].concat(args));
-                        } finally{
-                            if (!isSync) {
-                                recomputeInvalidatedAtoms();
-                                flushCallbacks();
-                            }
-                        }
-                    };
-                    try {
-                        var onUnmount = atomOnMount(atom, setAtom);
-                        if (onUnmount) mounted.u = function() {
-                            isSync = true;
-                            try {
-                                onUnmount();
-                            } finally{
-                                isSync = false;
-                            }
-                        };
-                    } finally{
-                        isSync = false;
-                    }
-                };
-                mountCallbacks.add(processOnMount);
-            }
-        }
-        return atomState.m;
-    };
-    var _unmountAtom = function unmountAtom(atom, atomState) {
-        if (atomState.m && !atomState.m.l.size && !Array.from(atomState.m.t).some(function(a) {
-            var _ensureAtomState$m;
-            return (_ensureAtomState$m = ensureAtomState(a).m) == null ? undefined : _ensureAtomState$m.d.has(atom);
-        })) {
-            var onUnmount = atomState.m.u;
-            if (onUnmount) unmountCallbacks.add(onUnmount);
-            delete atomState.m;
-            atomState.h == null || atomState.h();
-            for(var _iterator10 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(atomState.d.keys()), _step10; !(_step10 = _iterator10()).done;){
-                var a = _step10.value;
-                var aMounted = _unmountAtom(a, ensureAtomState(a));
-                aMounted == null || aMounted.t.delete(atom);
-            }
-            return undefined;
-        }
-        return atomState.m;
-    };
-    var subscribeAtom = function subscribeAtom(atom, listener) {
-        var atomState = ensureAtomState(atom);
-        var mounted = _mountAtom(atom, atomState);
-        var listeners = mounted.l;
-        listeners.add(listener);
-        flushCallbacks();
-        return function() {
-            listeners.delete(listener);
-            _unmountAtom(atom, atomState);
-            flushCallbacks();
-        };
-    };
-    var unstable_derive = function unstable_derive(fn) {
-        return $3574c3bf85e5f792$var$_buildStore.apply(undefined, fn.apply(undefined, storeArgs));
-    };
-    var store = {
-        get: readAtom,
-        set: writeAtom,
-        sub: subscribeAtom,
-        unstable_derive: unstable_derive
-    };
-    return store;
-};
-var $3574c3bf85e5f792$var$deriveDevStoreRev4 = function deriveDevStoreRev4(store) {
-    var debugMountedAtoms = new Set();
-    var savedGetAtomState;
-    var inRestoreAtom = 0;
-    var derivedStore = store.unstable_derive(function() {
-        for(var _len7 = arguments.length, storeArgs = new Array(_len7), _key7 = 0; _key7 < _len7; _key7++)storeArgs[_key7] = arguments[_key7];
-        var getAtomState = storeArgs[0], setAtomState = storeArgs[1], atomWrite = storeArgs[3];
-        savedGetAtomState = getAtomState;
-        storeArgs[1] = function devSetAtomState(atom, atomState) {
-            setAtomState(atom, atomState);
-            var originalMounted = atomState.h;
-            atomState.h = function() {
-                originalMounted == null || originalMounted();
-                if (atomState.m) debugMountedAtoms.add(atom);
-                else debugMountedAtoms.delete(atom);
-            };
-        };
-        storeArgs[3] = function devAtomWrite(atom, getter, setter) {
-            for(var _len8 = arguments.length, args = new Array(_len8 > 3 ? _len8 - 3 : 0), _key8 = 3; _key8 < _len8; _key8++)args[_key8 - 3] = arguments[_key8];
-            if (inRestoreAtom) return setter.apply(undefined, [
-                atom
-            ].concat(args));
-            return atomWrite.apply(undefined, [
-                atom,
-                getter,
-                setter
-            ].concat(args));
-        };
-        return storeArgs;
-    });
-    var savedStoreSet = derivedStore.set;
-    var devStore = {
-        dev4_get_internal_weak_map: function dev4_get_internal_weak_map() {
-            return {
-                get: function get(atom) {
-                    var atomState = savedGetAtomState(atom);
-                    if (!atomState || atomState.n === 0) return undefined;
-                    return atomState;
-                }
-            };
-        },
-        dev4_get_mounted_atoms: function dev4_get_mounted_atoms() {
-            return debugMountedAtoms;
-        },
-        dev4_restore_atoms: function dev4_restore_atoms(values) {
-            var restoreAtom = {
-                read: function read() {
-                    return null;
-                },
-                write: function write(_get, set) {
-                    ++inRestoreAtom;
-                    try {
-                        for(var _iterator11 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(values), _step11; !(_step11 = _iterator11()).done;){
-                            var _step11$value = _step11.value, _atom = _step11$value[0], value = _step11$value[1];
-                            if ($3574c3bf85e5f792$var$hasInitialValue(_atom)) set(_atom, value);
-                        }
-                    } finally{
-                        --inRestoreAtom;
-                    }
-                }
-            };
-            savedStoreSet(restoreAtom);
-        }
-    };
-    return Object.assign(derivedStore, devStore);
-};
-var $3574c3bf85e5f792$var$createStore = function createStore() {
-    var atomStateMap = new WeakMap();
-    var store = $3574c3bf85e5f792$var$_buildStore(function(atom) {
-        return atomStateMap.get(atom);
-    }, function(atom, atomState) {
-        return atomStateMap.set(atom, atomState).get(atom);
-    }, function(atom) {
-        for(var _len9 = arguments.length, params = new Array(_len9 > 1 ? _len9 - 1 : 0), _key9 = 1; _key9 < _len9; _key9++)params[_key9 - 1] = arguments[_key9];
-        return atom.read.apply(atom, params);
-    }, function(atom) {
-        for(var _len10 = arguments.length, params = new Array(_len10 > 1 ? _len10 - 1 : 0), _key10 = 1; _key10 < _len10; _key10++)params[_key10 - 1] = arguments[_key10];
-        return atom.write.apply(atom, params);
-    }, function(atom) {
-        for(var _len11 = arguments.length, params = new Array(_len11 > 1 ? _len11 - 1 : 0), _key11 = 1; _key11 < _len11; _key11++)params[_key11 - 1] = arguments[_key11];
-        return atom.unstable_onInit == null ? undefined : atom.unstable_onInit.apply(atom, params);
-    }, function(atom) {
-        for(var _len12 = arguments.length, params = new Array(_len12 > 1 ? _len12 - 1 : 0), _key12 = 1; _key12 < _len12; _key12++)params[_key12 - 1] = arguments[_key12];
-        return atom.onMount == null ? undefined : atom.onMount.apply(atom, params);
-    });
-    return store;
-};
-var $3574c3bf85e5f792$var$defaultStore;
-var $3574c3bf85e5f792$var$getDefaultStore = function getDefaultStore() {
-    if (!$3574c3bf85e5f792$var$defaultStore) {
-        $3574c3bf85e5f792$var$defaultStore = $3574c3bf85e5f792$var$createStore();
-        var _ref5;
-    }
-    return $3574c3bf85e5f792$var$defaultStore;
-};
-$3574c3bf85e5f792$export$5fb5cc0d078610b = $3574c3bf85e5f792$var$atom;
-$3574c3bf85e5f792$export$f51a9068ac82ea43 = $3574c3bf85e5f792$var$createStore;
-$3574c3bf85e5f792$export$39b2e4393dfcb8aa = $3574c3bf85e5f792$var$getDefaultStore;
-
-
-var $58ede67fe69e39f7$exports = {};
-
-$parcel$export($58ede67fe69e39f7$exports, "Provider", () => $58ede67fe69e39f7$export$2881499e37b75b9a, (v) => $58ede67fe69e39f7$export$2881499e37b75b9a = v);
-$parcel$export($58ede67fe69e39f7$exports, "useAtom", () => $58ede67fe69e39f7$export$83cf7ae8bb57e7ed, (v) => $58ede67fe69e39f7$export$83cf7ae8bb57e7ed = v);
-$parcel$export($58ede67fe69e39f7$exports, "useAtomValue", () => $58ede67fe69e39f7$export$89a40582f8c436cc, (v) => $58ede67fe69e39f7$export$89a40582f8c436cc = v);
-$parcel$export($58ede67fe69e39f7$exports, "useSetAtom", () => $58ede67fe69e39f7$export$a247c952d39ea7ea, (v) => $58ede67fe69e39f7$export$a247c952d39ea7ea = v);
-$parcel$export($58ede67fe69e39f7$exports, "useStore", () => $58ede67fe69e39f7$export$6ccbb43953eebf8, (v) => $58ede67fe69e39f7$export$6ccbb43953eebf8 = v);
-var $58ede67fe69e39f7$export$2881499e37b75b9a;
-var $58ede67fe69e39f7$export$83cf7ae8bb57e7ed;
-var $58ede67fe69e39f7$export$89a40582f8c436cc;
-var $58ede67fe69e39f7$export$a247c952d39ea7ea;
-var $58ede67fe69e39f7$export$6ccbb43953eebf8;
-'use client';
-'use strict';
-
-var $d4J5n = parcelRequire("d4J5n");
-
-var $58ede67fe69e39f7$var$StoreContext = $d4J5n.createContext(undefined);
-var $58ede67fe69e39f7$var$useStore = function useStore(options) {
-    var store = $d4J5n.useContext($58ede67fe69e39f7$var$StoreContext);
-    return (options == null ? undefined : options.store) || store || $3574c3bf85e5f792$export$39b2e4393dfcb8aa();
-};
-var $58ede67fe69e39f7$var$Provider = function Provider(_ref) {
-    var children = _ref.children, store = _ref.store;
-    var storeRef = $d4J5n.useRef(undefined);
-    if (!store && !storeRef.current) storeRef.current = $3574c3bf85e5f792$export$f51a9068ac82ea43();
-    return $d4J5n.createElement($58ede67fe69e39f7$var$StoreContext.Provider, {
-        value: store || storeRef.current
-    }, children);
-};
-var $58ede67fe69e39f7$var$isPromiseLike = function isPromiseLike(x) {
-    return typeof (x == null ? undefined : x.then) === 'function';
-};
-var $58ede67fe69e39f7$var$attachPromiseMeta = function attachPromiseMeta(promise) {
-    promise.status = 'pending';
-    promise.then(function(v) {
-        promise.status = 'fulfilled';
-        promise.value = v;
-    }, function(e) {
-        promise.status = 'rejected';
-        promise.reason = e;
-    });
-};
-var $58ede67fe69e39f7$var$use = $d4J5n.use || function(promise) {
-    if (promise.status === 'pending') throw promise;
-    else if (promise.status === 'fulfilled') return promise.value;
-    else if (promise.status === 'rejected') throw promise.reason;
-    else {
-        $58ede67fe69e39f7$var$attachPromiseMeta(promise);
-        throw promise;
-    }
-};
-var $58ede67fe69e39f7$var$continuablePromiseMap = new WeakMap();
-var $58ede67fe69e39f7$var$createContinuablePromise = function createContinuablePromise(promise) {
-    var continuablePromise = $58ede67fe69e39f7$var$continuablePromiseMap.get(promise);
-    if (!continuablePromise) {
-        continuablePromise = new Promise(function(resolve, reject) {
-            var curr = promise;
-            var onFulfilled = function onFulfilled(me) {
-                return function(v) {
-                    if (curr === me) resolve(v);
-                };
-            };
-            var onRejected = function onRejected(me) {
-                return function(e) {
-                    if (curr === me) reject(e);
-                };
-            };
-            var _registerCancelHandler = function registerCancelHandler(p) {
-                if ('onCancel' in p && typeof p.onCancel === 'function') p.onCancel(function(nextValue) {
-                    if ($58ede67fe69e39f7$var$isPromiseLike(nextValue)) {
-                        $58ede67fe69e39f7$var$continuablePromiseMap.set(nextValue, continuablePromise);
-                        curr = nextValue;
-                        nextValue.then(onFulfilled(nextValue), onRejected(nextValue));
-                        _registerCancelHandler(nextValue);
-                    } else resolve(nextValue);
-                });
-            };
-            promise.then(onFulfilled(promise), onRejected(promise));
-            _registerCancelHandler(promise);
-        });
-        $58ede67fe69e39f7$var$continuablePromiseMap.set(promise, continuablePromise);
-    }
-    return continuablePromise;
-};
-function $58ede67fe69e39f7$var$useAtomValue(atom, options) {
-    var store = $58ede67fe69e39f7$var$useStore(options);
-    var _useReducer = $d4J5n.useReducer(function(prev) {
-        var nextValue = store.get(atom);
-        if (Object.is(prev[0], nextValue) && prev[1] === store && prev[2] === atom) return prev;
-        return [
-            nextValue,
-            store,
-            atom
-        ];
-    }, undefined, function() {
-        return [
-            store.get(atom),
-            store,
-            atom
-        ];
-    }), _useReducer$ = _useReducer[0], valueFromReducer = _useReducer$[0], storeFromReducer = _useReducer$[1], atomFromReducer = _useReducer$[2], rerender = _useReducer[1];
-    var value = valueFromReducer;
-    if (storeFromReducer !== store || atomFromReducer !== atom) {
-        rerender();
-        value = store.get(atom);
-    }
-    var delay = options == null ? undefined : options.delay;
-    $d4J5n.useEffect(function() {
-        var unsub = store.sub(atom, function() {
-            if (typeof delay === 'number') {
-                var _value = store.get(atom);
-                if ($58ede67fe69e39f7$var$isPromiseLike(_value)) $58ede67fe69e39f7$var$attachPromiseMeta($58ede67fe69e39f7$var$createContinuablePromise(_value));
-                setTimeout(rerender, delay);
-                return;
-            }
-            rerender();
-        });
-        rerender();
-        return unsub;
-    }, [
-        store,
-        atom,
-        delay
-    ]);
-    $d4J5n.useDebugValue(value);
-    if ($58ede67fe69e39f7$var$isPromiseLike(value)) {
-        var promise = $58ede67fe69e39f7$var$createContinuablePromise(value);
-        return $58ede67fe69e39f7$var$use(promise);
-    }
-    return value;
-}
-function $58ede67fe69e39f7$var$useSetAtom(atom, options) {
-    var store = $58ede67fe69e39f7$var$useStore(options);
-    var setAtom = $d4J5n.useCallback(function() {
-        for(var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++)args[_key] = arguments[_key];
-        return store.set.apply(store, [
-            atom
-        ].concat(args));
-    }, [
-        store,
-        atom
-    ]);
-    return setAtom;
-}
-function $58ede67fe69e39f7$var$useAtom(atom, options) {
-    return [
-        $58ede67fe69e39f7$var$useAtomValue(atom, options),
-        $58ede67fe69e39f7$var$useSetAtom(atom, options)
-    ];
-}
-$58ede67fe69e39f7$export$2881499e37b75b9a = $58ede67fe69e39f7$var$Provider;
-$58ede67fe69e39f7$export$83cf7ae8bb57e7ed = $58ede67fe69e39f7$var$useAtom;
-$58ede67fe69e39f7$export$89a40582f8c436cc = $58ede67fe69e39f7$var$useAtomValue;
-$58ede67fe69e39f7$export$a247c952d39ea7ea = $58ede67fe69e39f7$var$useSetAtom;
-$58ede67fe69e39f7$export$6ccbb43953eebf8 = $58ede67fe69e39f7$var$useStore;
-
-
-Object.keys($3574c3bf85e5f792$exports).forEach(function(k) {
-    if (k !== 'default' && !Object.prototype.hasOwnProperty.call($12c15ab479c77cab$exports, k)) Object.defineProperty($12c15ab479c77cab$exports, k, {
-        enumerable: true,
-        get: function() {
-            return $3574c3bf85e5f792$exports[k];
-        }
-    });
-});
-Object.keys($58ede67fe69e39f7$exports).forEach(function(k) {
-    if (k !== 'default' && !Object.prototype.hasOwnProperty.call($12c15ab479c77cab$exports, k)) Object.defineProperty($12c15ab479c77cab$exports, k, {
-        enumerable: true,
-        get: function() {
-            return $58ede67fe69e39f7$exports[k];
-        }
-    });
-});
-
-
 
 var $gAMt6 = parcelRequire("gAMt6");
 /** Built-in value references. */ var $61ce27efd9a9a39d$var$Symbol = (0, $gAMt6.default).Symbol;
@@ -31038,6 +30237,910 @@ var $b80a8da66db5d093$exports = {};
 $b80a8da66db5d093$exports = new URL("monthly.6a852725.png", import.meta.url).toString();
 
 
+var $12c15ab479c77cab$exports = {};
+'use strict';
+var $3574c3bf85e5f792$exports = {};
+
+$parcel$export($3574c3bf85e5f792$exports, "atom", () => $3574c3bf85e5f792$export$5fb5cc0d078610b, (v) => $3574c3bf85e5f792$export$5fb5cc0d078610b = v);
+$parcel$export($3574c3bf85e5f792$exports, "createStore", () => $3574c3bf85e5f792$export$f51a9068ac82ea43, (v) => $3574c3bf85e5f792$export$f51a9068ac82ea43 = v);
+$parcel$export($3574c3bf85e5f792$exports, "getDefaultStore", () => $3574c3bf85e5f792$export$39b2e4393dfcb8aa, (v) => $3574c3bf85e5f792$export$39b2e4393dfcb8aa = v);
+var $3574c3bf85e5f792$export$5fb5cc0d078610b;
+var $3574c3bf85e5f792$export$f51a9068ac82ea43;
+var $3574c3bf85e5f792$export$39b2e4393dfcb8aa;
+'use strict';
+var $3574c3bf85e5f792$var$keyCount = 0;
+function $3574c3bf85e5f792$var$atom(read, write) {
+    var key = "atom" + ++$3574c3bf85e5f792$var$keyCount;
+    var config = {
+        toString: function toString() {
+            return key;
+        }
+    };
+    if (typeof read === 'function') config.read = read;
+    else {
+        config.init = read;
+        config.read = $3574c3bf85e5f792$var$defaultRead;
+        config.write = $3574c3bf85e5f792$var$defaultWrite;
+    }
+    if (write) config.write = write;
+    return config;
+}
+function $3574c3bf85e5f792$var$defaultRead(get) {
+    return get(this);
+}
+function $3574c3bf85e5f792$var$defaultWrite(get, set, arg) {
+    return set(this, typeof arg === 'function' ? arg(get(this)) : arg);
+}
+function $3574c3bf85e5f792$var$_arrayLikeToArray(r, a) {
+    (null == a || a > r.length) && (a = r.length);
+    for(var e = 0, n = Array(a); e < a; e++)n[e] = r[e];
+    return n;
+}
+function $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(r, e) {
+    var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+    if (t) return (t = t.call(r)).next.bind(t);
+    if (Array.isArray(r) || (t = $3574c3bf85e5f792$var$_unsupportedIterableToArray(r)) || e) {
+        t && (r = t);
+        var o = 0;
+        return function() {
+            return o >= r.length ? {
+                done: true
+            } : {
+                done: false,
+                value: r[o++]
+            };
+        };
+    }
+    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function $3574c3bf85e5f792$var$_unsupportedIterableToArray(r, a) {
+    if (r) {
+        if ("string" == typeof r) return $3574c3bf85e5f792$var$_arrayLikeToArray(r, a);
+        var t = ({}).toString.call(r).slice(8, -1);
+        return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? $3574c3bf85e5f792$var$_arrayLikeToArray(r, a) : undefined;
+    }
+}
+var $3574c3bf85e5f792$var$isSelfAtom = function isSelfAtom(atom, a) {
+    return atom.unstable_is ? atom.unstable_is(a) : a === atom;
+};
+var $3574c3bf85e5f792$var$hasInitialValue = function hasInitialValue(atom) {
+    return 'init' in atom;
+};
+var $3574c3bf85e5f792$var$isActuallyWritableAtom = function isActuallyWritableAtom(atom) {
+    return !!atom.write;
+};
+var $3574c3bf85e5f792$var$cancelablePromiseMap = new WeakMap();
+var $3574c3bf85e5f792$var$isPendingPromise = function isPendingPromise(value) {
+    var _cancelablePromiseMap;
+    return $3574c3bf85e5f792$var$isPromiseLike(value) && !((_cancelablePromiseMap = $3574c3bf85e5f792$var$cancelablePromiseMap.get(value)) != null && _cancelablePromiseMap[1]);
+};
+var $3574c3bf85e5f792$var$cancelPromise = function cancelPromise(promise, nextValue) {
+    var promiseState = $3574c3bf85e5f792$var$cancelablePromiseMap.get(promise);
+    if (promiseState) {
+        promiseState[1] = true;
+        promiseState[0].forEach(function(fn) {
+            return fn(nextValue);
+        });
+    }
+};
+var $3574c3bf85e5f792$var$patchPromiseForCancelability = function patchPromiseForCancelability(promise) {
+    if ($3574c3bf85e5f792$var$cancelablePromiseMap.has(promise)) return;
+    var promiseState = [
+        new Set(),
+        false
+    ];
+    $3574c3bf85e5f792$var$cancelablePromiseMap.set(promise, promiseState);
+    var settle = function settle() {
+        promiseState[1] = true;
+    };
+    promise.then(settle, settle);
+    promise.onCancel = function(fn) {
+        promiseState[0].add(fn);
+    };
+};
+var $3574c3bf85e5f792$var$isPromiseLike = function isPromiseLike(p) {
+    return typeof (p == null ? undefined : p.then) === 'function';
+};
+var $3574c3bf85e5f792$var$isAtomStateInitialized = function isAtomStateInitialized(atomState) {
+    return 'v' in atomState || 'e' in atomState;
+};
+var $3574c3bf85e5f792$var$returnAtomValue = function returnAtomValue(atomState) {
+    if ('e' in atomState) throw atomState.e;
+    return atomState.v;
+};
+var $3574c3bf85e5f792$var$addPendingPromiseToDependency = function addPendingPromiseToDependency(atom, promise, dependencyAtomState) {
+    if (!dependencyAtomState.p.has(atom)) {
+        dependencyAtomState.p.add(atom);
+        promise.then(function() {
+            dependencyAtomState.p.delete(atom);
+        }, function() {
+            dependencyAtomState.p.delete(atom);
+        });
+    }
+};
+var $3574c3bf85e5f792$var$addDependency = function addDependency(atom, atomState, a, aState) {
+    var _aState$m;
+    atomState.d.set(a, aState.n);
+    if ($3574c3bf85e5f792$var$isPendingPromise(atomState.v)) $3574c3bf85e5f792$var$addPendingPromiseToDependency(atom, atomState.v, aState);
+    (_aState$m = aState.m) == null || _aState$m.t.add(atom);
+};
+var $3574c3bf85e5f792$var$INTERNAL_flushStoreHook = Symbol.for('JOTAI.EXPERIMENTAL.FLUSHSTOREHOOK');
+var $3574c3bf85e5f792$var$_buildStore = function buildStore() {
+    for(var _len = arguments.length, storeArgs = new Array(_len), _key = 0; _key < _len; _key++)storeArgs[_key] = arguments[_key];
+    var getAtomState = storeArgs[0], setAtomState = storeArgs[1], atomRead = storeArgs[2], atomWrite = storeArgs[3], atomOnInit = storeArgs[4], atomOnMount = storeArgs[5];
+    var ensureAtomState = function ensureAtomState(atom) {
+        var atomState = getAtomState(atom);
+        if (!atomState) {
+            atomState = {
+                d: new Map(),
+                p: new Set(),
+                n: 0
+            };
+            setAtomState(atom, atomState);
+            atomOnInit == null || atomOnInit(atom, store);
+        }
+        return atomState;
+    };
+    var invalidatedAtoms = new WeakMap();
+    var changedAtoms = new Map();
+    var unmountCallbacks = new Set();
+    var mountCallbacks = new Set();
+    var flushCallbacks = function flushCallbacks() {
+        var errors = [];
+        var call = function call(fn) {
+            try {
+                fn();
+            } catch (e) {
+                errors.push(e);
+            }
+        };
+        var _loop = function _loop() {
+            var _INTERNAL_flushStoreH, _ref;
+            (_INTERNAL_flushStoreH = (_ref = store)[$3574c3bf85e5f792$var$INTERNAL_flushStoreHook]) == null || _INTERNAL_flushStoreH.call(_ref);
+            var callbacks = new Set();
+            var add = callbacks.add.bind(callbacks);
+            changedAtoms.forEach(function(atomState) {
+                var _atomState$m;
+                return (_atomState$m = atomState.m) == null ? undefined : _atomState$m.l.forEach(add);
+            });
+            changedAtoms.clear();
+            unmountCallbacks.forEach(add);
+            unmountCallbacks.clear();
+            mountCallbacks.forEach(add);
+            mountCallbacks.clear();
+            callbacks.forEach(call);
+            if (changedAtoms.size) recomputeInvalidatedAtoms();
+        };
+        do _loop();
+        while (changedAtoms.size || unmountCallbacks.size || mountCallbacks.size);
+        if (errors.length) throw errors[0];
+    };
+    var setAtomStateValueOrPromise = function setAtomStateValueOrPromise(atom, atomState, valueOrPromise) {
+        var hasPrevValue = 'v' in atomState;
+        var prevValue = atomState.v;
+        var pendingPromise = $3574c3bf85e5f792$var$isPendingPromise(atomState.v) ? atomState.v : null;
+        if ($3574c3bf85e5f792$var$isPromiseLike(valueOrPromise)) {
+            $3574c3bf85e5f792$var$patchPromiseForCancelability(valueOrPromise);
+            for(var _iterator = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(atomState.d.keys()), _step; !(_step = _iterator()).done;){
+                var a = _step.value;
+                $3574c3bf85e5f792$var$addPendingPromiseToDependency(atom, valueOrPromise, ensureAtomState(a));
+            }
+            atomState.v = valueOrPromise;
+        } else atomState.v = valueOrPromise;
+        delete atomState.e;
+        if (!hasPrevValue || !Object.is(prevValue, atomState.v)) {
+            ++atomState.n;
+            if (pendingPromise) $3574c3bf85e5f792$var$cancelPromise(pendingPromise, valueOrPromise);
+        }
+    };
+    var _readAtomState = function readAtomState(atom) {
+        var atomState = ensureAtomState(atom);
+        if ($3574c3bf85e5f792$var$isAtomStateInitialized(atomState)) {
+            if (atomState.m && invalidatedAtoms.get(atom) !== atomState.n) return atomState;
+            if (Array.from(atomState.d).every(function(_ref2) {
+                var a = _ref2[0], n = _ref2[1];
+                return _readAtomState(a).n === n;
+            })) return atomState;
+        }
+        atomState.d.clear();
+        var isSync = true;
+        var mountDependenciesIfAsync = function mountDependenciesIfAsync() {
+            if (atomState.m) {
+                mountDependencies(atom, atomState);
+                recomputeInvalidatedAtoms();
+                flushCallbacks();
+            }
+        };
+        var getter = function getter(a) {
+            if ($3574c3bf85e5f792$var$isSelfAtom(atom, a)) {
+                var _aState = ensureAtomState(a);
+                if (!$3574c3bf85e5f792$var$isAtomStateInitialized(_aState)) {
+                    if ($3574c3bf85e5f792$var$hasInitialValue(a)) setAtomStateValueOrPromise(a, _aState, a.init);
+                    else throw new Error('no atom init');
+                }
+                return $3574c3bf85e5f792$var$returnAtomValue(_aState);
+            }
+            var aState = _readAtomState(a);
+            try {
+                return $3574c3bf85e5f792$var$returnAtomValue(aState);
+            } finally{
+                $3574c3bf85e5f792$var$addDependency(atom, atomState, a, aState);
+                if (!isSync) mountDependenciesIfAsync();
+            }
+        };
+        var controller;
+        var setSelf;
+        var options = {
+            get signal () {
+                if (!controller) controller = new AbortController();
+                return controller.signal;
+            },
+            get setSelf () {
+                if (!setSelf && $3574c3bf85e5f792$var$isActuallyWritableAtom(atom)) setSelf = function setSelf() {
+                    if (!isSync) {
+                        for(var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++)args[_key2] = arguments[_key2];
+                        return writeAtom.apply(undefined, [
+                            atom
+                        ].concat(args));
+                    }
+                };
+                return setSelf;
+            }
+        };
+        try {
+            var valueOrPromise = atomRead(atom, getter, options);
+            setAtomStateValueOrPromise(atom, atomState, valueOrPromise);
+            if ($3574c3bf85e5f792$var$isPromiseLike(valueOrPromise)) {
+                valueOrPromise.onCancel == null || valueOrPromise.onCancel(function() {
+                    var _controller;
+                    return (_controller = controller) == null ? void 0 : _controller.abort();
+                });
+                valueOrPromise.then(mountDependenciesIfAsync, mountDependenciesIfAsync);
+            }
+            return atomState;
+        } catch (error) {
+            delete atomState.v;
+            atomState.e = error;
+            ++atomState.n;
+            return atomState;
+        } finally{
+            isSync = false;
+        }
+    };
+    var readAtom = function readAtom(atom) {
+        return $3574c3bf85e5f792$var$returnAtomValue(_readAtomState(atom));
+    };
+    var getMountedOrPendingDependents = function getMountedOrPendingDependents(atomState) {
+        var dependents = new Map();
+        for(var _iterator2 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(((_atomState$m2 = atomState.m) == null ? undefined : _atomState$m2.t) || []), _step2; !(_step2 = _iterator2()).done;){
+            var _atomState$m2;
+            var a = _step2.value;
+            var aState = ensureAtomState(a);
+            if (aState.m) dependents.set(a, aState);
+        }
+        for(var _iterator3 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(atomState.p), _step3; !(_step3 = _iterator3()).done;){
+            var atomWithPendingPromise = _step3.value;
+            dependents.set(atomWithPendingPromise, ensureAtomState(atomWithPendingPromise));
+        }
+        return dependents;
+    };
+    var invalidateDependents = function invalidateDependents(atomState) {
+        var stack = [
+            atomState
+        ];
+        while(stack.length){
+            var aState = stack.pop();
+            for(var _iterator4 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(getMountedOrPendingDependents(aState)), _step4; !(_step4 = _iterator4()).done;){
+                var _step4$value = _step4.value, d = _step4$value[0], s = _step4$value[1];
+                invalidatedAtoms.set(d, s.n);
+                stack.push(s);
+            }
+        }
+    };
+    var recomputeInvalidatedAtoms = function recomputeInvalidatedAtoms() {
+        var topSortedReversed = [];
+        var visiting = new WeakSet();
+        var visited = new WeakSet();
+        var stack = Array.from(changedAtoms);
+        while(stack.length){
+            var _ref3 = stack[stack.length - 1], a = _ref3[0], aState = _ref3[1];
+            if (visited.has(a)) {
+                stack.pop();
+                continue;
+            }
+            if (visiting.has(a)) {
+                if (invalidatedAtoms.get(a) === aState.n) topSortedReversed.push([
+                    a,
+                    aState,
+                    aState.n
+                ]);
+                else {
+                    invalidatedAtoms.delete(a);
+                    changedAtoms.set(a, aState);
+                }
+                visited.add(a);
+                stack.pop();
+                continue;
+            }
+            visiting.add(a);
+            for(var _iterator5 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(getMountedOrPendingDependents(aState)), _step5; !(_step5 = _iterator5()).done;){
+                var _step5$value = _step5.value, d = _step5$value[0], s = _step5$value[1];
+                if (!visiting.has(d)) stack.push([
+                    d,
+                    s
+                ]);
+            }
+        }
+        for(var i = topSortedReversed.length - 1; i >= 0; --i){
+            var _ref4 = topSortedReversed[i], _a = _ref4[0], _aState2 = _ref4[1], prevEpochNumber = _ref4[2];
+            var hasChangedDeps = false;
+            for(var _iterator6 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(_aState2.d.keys()), _step6; !(_step6 = _iterator6()).done;){
+                var dep = _step6.value;
+                if (dep !== _a && changedAtoms.has(dep)) {
+                    hasChangedDeps = true;
+                    break;
+                }
+            }
+            if (hasChangedDeps) {
+                _readAtomState(_a);
+                mountDependencies(_a, _aState2);
+                if (prevEpochNumber !== _aState2.n) {
+                    changedAtoms.set(_a, _aState2);
+                    _aState2.u == null || _aState2.u();
+                }
+            }
+            invalidatedAtoms.delete(_a);
+        }
+    };
+    var _writeAtomState = function writeAtomState(atom) {
+        var isSync = true;
+        var getter = function getter(a) {
+            return $3574c3bf85e5f792$var$returnAtomValue(_readAtomState(a));
+        };
+        var setter = function setter(a) {
+            var aState = ensureAtomState(a);
+            try {
+                for(var _len4 = arguments.length, args = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++)args[_key4 - 1] = arguments[_key4];
+                if ($3574c3bf85e5f792$var$isSelfAtom(atom, a)) {
+                    if (!$3574c3bf85e5f792$var$hasInitialValue(a)) throw new Error('atom not writable');
+                    var prevEpochNumber = aState.n;
+                    var v = args[0];
+                    setAtomStateValueOrPromise(a, aState, v);
+                    mountDependencies(a, aState);
+                    if (prevEpochNumber !== aState.n) {
+                        changedAtoms.set(a, aState);
+                        aState.u == null || aState.u();
+                        invalidateDependents(aState);
+                    }
+                    return undefined;
+                } else return _writeAtomState.apply(void 0, [
+                    a
+                ].concat(args));
+            } finally{
+                if (!isSync) {
+                    recomputeInvalidatedAtoms();
+                    flushCallbacks();
+                }
+            }
+        };
+        try {
+            for(var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++)args[_key3 - 1] = arguments[_key3];
+            return atomWrite.apply(void 0, [
+                atom,
+                getter,
+                setter
+            ].concat(args));
+        } finally{
+            isSync = false;
+        }
+    };
+    var writeAtom = function writeAtom(atom) {
+        try {
+            for(var _len5 = arguments.length, args = new Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++)args[_key5 - 1] = arguments[_key5];
+            return _writeAtomState.apply(void 0, [
+                atom
+            ].concat(args));
+        } finally{
+            recomputeInvalidatedAtoms();
+            flushCallbacks();
+        }
+    };
+    var mountDependencies = function mountDependencies(atom, atomState) {
+        if (atomState.m && !$3574c3bf85e5f792$var$isPendingPromise(atomState.v)) {
+            for(var _iterator7 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(atomState.d), _step7; !(_step7 = _iterator7()).done;){
+                var _step7$value = _step7.value, a = _step7$value[0], n = _step7$value[1];
+                if (!atomState.m.d.has(a)) {
+                    var aState = ensureAtomState(a);
+                    var aMounted = _mountAtom(a, aState);
+                    aMounted.t.add(atom);
+                    atomState.m.d.add(a);
+                    if (n !== aState.n) {
+                        changedAtoms.set(a, aState);
+                        aState.u == null || aState.u();
+                        invalidateDependents(aState);
+                    }
+                }
+            }
+            for(var _iterator8 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(atomState.m.d || []), _step8; !(_step8 = _iterator8()).done;){
+                var _a2 = _step8.value;
+                if (!atomState.d.has(_a2)) {
+                    atomState.m.d.delete(_a2);
+                    var _aMounted = _unmountAtom(_a2, ensureAtomState(_a2));
+                    _aMounted == null || _aMounted.t.delete(atom);
+                }
+            }
+        }
+    };
+    var _mountAtom = function mountAtom(atom, atomState) {
+        if (!atomState.m) {
+            _readAtomState(atom);
+            for(var _iterator9 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(atomState.d.keys()), _step9; !(_step9 = _iterator9()).done;){
+                var a = _step9.value;
+                var aMounted = _mountAtom(a, ensureAtomState(a));
+                aMounted.t.add(atom);
+            }
+            atomState.m = {
+                l: new Set(),
+                d: new Set(atomState.d.keys()),
+                t: new Set()
+            };
+            atomState.h == null || atomState.h();
+            if ($3574c3bf85e5f792$var$isActuallyWritableAtom(atom)) {
+                var mounted = atomState.m;
+                var processOnMount = function processOnMount() {
+                    var isSync = true;
+                    var setAtom = function setAtom() {
+                        try {
+                            for(var _len6 = arguments.length, args = new Array(_len6), _key6 = 0; _key6 < _len6; _key6++)args[_key6] = arguments[_key6];
+                            return _writeAtomState.apply(void 0, [
+                                atom
+                            ].concat(args));
+                        } finally{
+                            if (!isSync) {
+                                recomputeInvalidatedAtoms();
+                                flushCallbacks();
+                            }
+                        }
+                    };
+                    try {
+                        var onUnmount = atomOnMount(atom, setAtom);
+                        if (onUnmount) mounted.u = function() {
+                            isSync = true;
+                            try {
+                                onUnmount();
+                            } finally{
+                                isSync = false;
+                            }
+                        };
+                    } finally{
+                        isSync = false;
+                    }
+                };
+                mountCallbacks.add(processOnMount);
+            }
+        }
+        return atomState.m;
+    };
+    var _unmountAtom = function unmountAtom(atom, atomState) {
+        if (atomState.m && !atomState.m.l.size && !Array.from(atomState.m.t).some(function(a) {
+            var _ensureAtomState$m;
+            return (_ensureAtomState$m = ensureAtomState(a).m) == null ? undefined : _ensureAtomState$m.d.has(atom);
+        })) {
+            var onUnmount = atomState.m.u;
+            if (onUnmount) unmountCallbacks.add(onUnmount);
+            delete atomState.m;
+            atomState.h == null || atomState.h();
+            for(var _iterator10 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(atomState.d.keys()), _step10; !(_step10 = _iterator10()).done;){
+                var a = _step10.value;
+                var aMounted = _unmountAtom(a, ensureAtomState(a));
+                aMounted == null || aMounted.t.delete(atom);
+            }
+            return undefined;
+        }
+        return atomState.m;
+    };
+    var subscribeAtom = function subscribeAtom(atom, listener) {
+        var atomState = ensureAtomState(atom);
+        var mounted = _mountAtom(atom, atomState);
+        var listeners = mounted.l;
+        listeners.add(listener);
+        flushCallbacks();
+        return function() {
+            listeners.delete(listener);
+            _unmountAtom(atom, atomState);
+            flushCallbacks();
+        };
+    };
+    var unstable_derive = function unstable_derive(fn) {
+        return $3574c3bf85e5f792$var$_buildStore.apply(undefined, fn.apply(undefined, storeArgs));
+    };
+    var store = {
+        get: readAtom,
+        set: writeAtom,
+        sub: subscribeAtom,
+        unstable_derive: unstable_derive
+    };
+    return store;
+};
+var $3574c3bf85e5f792$var$deriveDevStoreRev4 = function deriveDevStoreRev4(store) {
+    var debugMountedAtoms = new Set();
+    var savedGetAtomState;
+    var inRestoreAtom = 0;
+    var derivedStore = store.unstable_derive(function() {
+        for(var _len7 = arguments.length, storeArgs = new Array(_len7), _key7 = 0; _key7 < _len7; _key7++)storeArgs[_key7] = arguments[_key7];
+        var getAtomState = storeArgs[0], setAtomState = storeArgs[1], atomWrite = storeArgs[3];
+        savedGetAtomState = getAtomState;
+        storeArgs[1] = function devSetAtomState(atom, atomState) {
+            setAtomState(atom, atomState);
+            var originalMounted = atomState.h;
+            atomState.h = function() {
+                originalMounted == null || originalMounted();
+                if (atomState.m) debugMountedAtoms.add(atom);
+                else debugMountedAtoms.delete(atom);
+            };
+        };
+        storeArgs[3] = function devAtomWrite(atom, getter, setter) {
+            for(var _len8 = arguments.length, args = new Array(_len8 > 3 ? _len8 - 3 : 0), _key8 = 3; _key8 < _len8; _key8++)args[_key8 - 3] = arguments[_key8];
+            if (inRestoreAtom) return setter.apply(undefined, [
+                atom
+            ].concat(args));
+            return atomWrite.apply(undefined, [
+                atom,
+                getter,
+                setter
+            ].concat(args));
+        };
+        return storeArgs;
+    });
+    var savedStoreSet = derivedStore.set;
+    var devStore = {
+        dev4_get_internal_weak_map: function dev4_get_internal_weak_map() {
+            return {
+                get: function get(atom) {
+                    var atomState = savedGetAtomState(atom);
+                    if (!atomState || atomState.n === 0) return undefined;
+                    return atomState;
+                }
+            };
+        },
+        dev4_get_mounted_atoms: function dev4_get_mounted_atoms() {
+            return debugMountedAtoms;
+        },
+        dev4_restore_atoms: function dev4_restore_atoms(values) {
+            var restoreAtom = {
+                read: function read() {
+                    return null;
+                },
+                write: function write(_get, set) {
+                    ++inRestoreAtom;
+                    try {
+                        for(var _iterator11 = $3574c3bf85e5f792$var$_createForOfIteratorHelperLoose(values), _step11; !(_step11 = _iterator11()).done;){
+                            var _step11$value = _step11.value, _atom = _step11$value[0], value = _step11$value[1];
+                            if ($3574c3bf85e5f792$var$hasInitialValue(_atom)) set(_atom, value);
+                        }
+                    } finally{
+                        --inRestoreAtom;
+                    }
+                }
+            };
+            savedStoreSet(restoreAtom);
+        }
+    };
+    return Object.assign(derivedStore, devStore);
+};
+var $3574c3bf85e5f792$var$createStore = function createStore() {
+    var atomStateMap = new WeakMap();
+    var store = $3574c3bf85e5f792$var$_buildStore(function(atom) {
+        return atomStateMap.get(atom);
+    }, function(atom, atomState) {
+        return atomStateMap.set(atom, atomState).get(atom);
+    }, function(atom) {
+        for(var _len9 = arguments.length, params = new Array(_len9 > 1 ? _len9 - 1 : 0), _key9 = 1; _key9 < _len9; _key9++)params[_key9 - 1] = arguments[_key9];
+        return atom.read.apply(atom, params);
+    }, function(atom) {
+        for(var _len10 = arguments.length, params = new Array(_len10 > 1 ? _len10 - 1 : 0), _key10 = 1; _key10 < _len10; _key10++)params[_key10 - 1] = arguments[_key10];
+        return atom.write.apply(atom, params);
+    }, function(atom) {
+        for(var _len11 = arguments.length, params = new Array(_len11 > 1 ? _len11 - 1 : 0), _key11 = 1; _key11 < _len11; _key11++)params[_key11 - 1] = arguments[_key11];
+        return atom.unstable_onInit == null ? undefined : atom.unstable_onInit.apply(atom, params);
+    }, function(atom) {
+        for(var _len12 = arguments.length, params = new Array(_len12 > 1 ? _len12 - 1 : 0), _key12 = 1; _key12 < _len12; _key12++)params[_key12 - 1] = arguments[_key12];
+        return atom.onMount == null ? undefined : atom.onMount.apply(atom, params);
+    });
+    return store;
+};
+var $3574c3bf85e5f792$var$defaultStore;
+var $3574c3bf85e5f792$var$getDefaultStore = function getDefaultStore() {
+    if (!$3574c3bf85e5f792$var$defaultStore) {
+        $3574c3bf85e5f792$var$defaultStore = $3574c3bf85e5f792$var$createStore();
+        var _ref5;
+    }
+    return $3574c3bf85e5f792$var$defaultStore;
+};
+$3574c3bf85e5f792$export$5fb5cc0d078610b = $3574c3bf85e5f792$var$atom;
+$3574c3bf85e5f792$export$f51a9068ac82ea43 = $3574c3bf85e5f792$var$createStore;
+$3574c3bf85e5f792$export$39b2e4393dfcb8aa = $3574c3bf85e5f792$var$getDefaultStore;
+
+
+var $58ede67fe69e39f7$exports = {};
+
+$parcel$export($58ede67fe69e39f7$exports, "Provider", () => $58ede67fe69e39f7$export$2881499e37b75b9a, (v) => $58ede67fe69e39f7$export$2881499e37b75b9a = v);
+$parcel$export($58ede67fe69e39f7$exports, "useAtom", () => $58ede67fe69e39f7$export$83cf7ae8bb57e7ed, (v) => $58ede67fe69e39f7$export$83cf7ae8bb57e7ed = v);
+$parcel$export($58ede67fe69e39f7$exports, "useAtomValue", () => $58ede67fe69e39f7$export$89a40582f8c436cc, (v) => $58ede67fe69e39f7$export$89a40582f8c436cc = v);
+$parcel$export($58ede67fe69e39f7$exports, "useSetAtom", () => $58ede67fe69e39f7$export$a247c952d39ea7ea, (v) => $58ede67fe69e39f7$export$a247c952d39ea7ea = v);
+$parcel$export($58ede67fe69e39f7$exports, "useStore", () => $58ede67fe69e39f7$export$6ccbb43953eebf8, (v) => $58ede67fe69e39f7$export$6ccbb43953eebf8 = v);
+var $58ede67fe69e39f7$export$2881499e37b75b9a;
+var $58ede67fe69e39f7$export$83cf7ae8bb57e7ed;
+var $58ede67fe69e39f7$export$89a40582f8c436cc;
+var $58ede67fe69e39f7$export$a247c952d39ea7ea;
+var $58ede67fe69e39f7$export$6ccbb43953eebf8;
+'use client';
+'use strict';
+
+var $d4J5n = parcelRequire("d4J5n");
+
+var $58ede67fe69e39f7$var$StoreContext = $d4J5n.createContext(undefined);
+var $58ede67fe69e39f7$var$useStore = function useStore(options) {
+    var store = $d4J5n.useContext($58ede67fe69e39f7$var$StoreContext);
+    return (options == null ? undefined : options.store) || store || $3574c3bf85e5f792$export$39b2e4393dfcb8aa();
+};
+var $58ede67fe69e39f7$var$Provider = function Provider(_ref) {
+    var children = _ref.children, store = _ref.store;
+    var storeRef = $d4J5n.useRef(undefined);
+    if (!store && !storeRef.current) storeRef.current = $3574c3bf85e5f792$export$f51a9068ac82ea43();
+    return $d4J5n.createElement($58ede67fe69e39f7$var$StoreContext.Provider, {
+        value: store || storeRef.current
+    }, children);
+};
+var $58ede67fe69e39f7$var$isPromiseLike = function isPromiseLike(x) {
+    return typeof (x == null ? undefined : x.then) === 'function';
+};
+var $58ede67fe69e39f7$var$attachPromiseMeta = function attachPromiseMeta(promise) {
+    promise.status = 'pending';
+    promise.then(function(v) {
+        promise.status = 'fulfilled';
+        promise.value = v;
+    }, function(e) {
+        promise.status = 'rejected';
+        promise.reason = e;
+    });
+};
+var $58ede67fe69e39f7$var$use = $d4J5n.use || function(promise) {
+    if (promise.status === 'pending') throw promise;
+    else if (promise.status === 'fulfilled') return promise.value;
+    else if (promise.status === 'rejected') throw promise.reason;
+    else {
+        $58ede67fe69e39f7$var$attachPromiseMeta(promise);
+        throw promise;
+    }
+};
+var $58ede67fe69e39f7$var$continuablePromiseMap = new WeakMap();
+var $58ede67fe69e39f7$var$createContinuablePromise = function createContinuablePromise(promise) {
+    var continuablePromise = $58ede67fe69e39f7$var$continuablePromiseMap.get(promise);
+    if (!continuablePromise) {
+        continuablePromise = new Promise(function(resolve, reject) {
+            var curr = promise;
+            var onFulfilled = function onFulfilled(me) {
+                return function(v) {
+                    if (curr === me) resolve(v);
+                };
+            };
+            var onRejected = function onRejected(me) {
+                return function(e) {
+                    if (curr === me) reject(e);
+                };
+            };
+            var _registerCancelHandler = function registerCancelHandler(p) {
+                if ('onCancel' in p && typeof p.onCancel === 'function') p.onCancel(function(nextValue) {
+                    if ($58ede67fe69e39f7$var$isPromiseLike(nextValue)) {
+                        $58ede67fe69e39f7$var$continuablePromiseMap.set(nextValue, continuablePromise);
+                        curr = nextValue;
+                        nextValue.then(onFulfilled(nextValue), onRejected(nextValue));
+                        _registerCancelHandler(nextValue);
+                    } else resolve(nextValue);
+                });
+            };
+            promise.then(onFulfilled(promise), onRejected(promise));
+            _registerCancelHandler(promise);
+        });
+        $58ede67fe69e39f7$var$continuablePromiseMap.set(promise, continuablePromise);
+    }
+    return continuablePromise;
+};
+function $58ede67fe69e39f7$var$useAtomValue(atom, options) {
+    var store = $58ede67fe69e39f7$var$useStore(options);
+    var _useReducer = $d4J5n.useReducer(function(prev) {
+        var nextValue = store.get(atom);
+        if (Object.is(prev[0], nextValue) && prev[1] === store && prev[2] === atom) return prev;
+        return [
+            nextValue,
+            store,
+            atom
+        ];
+    }, undefined, function() {
+        return [
+            store.get(atom),
+            store,
+            atom
+        ];
+    }), _useReducer$ = _useReducer[0], valueFromReducer = _useReducer$[0], storeFromReducer = _useReducer$[1], atomFromReducer = _useReducer$[2], rerender = _useReducer[1];
+    var value = valueFromReducer;
+    if (storeFromReducer !== store || atomFromReducer !== atom) {
+        rerender();
+        value = store.get(atom);
+    }
+    var delay = options == null ? undefined : options.delay;
+    $d4J5n.useEffect(function() {
+        var unsub = store.sub(atom, function() {
+            if (typeof delay === 'number') {
+                var _value = store.get(atom);
+                if ($58ede67fe69e39f7$var$isPromiseLike(_value)) $58ede67fe69e39f7$var$attachPromiseMeta($58ede67fe69e39f7$var$createContinuablePromise(_value));
+                setTimeout(rerender, delay);
+                return;
+            }
+            rerender();
+        });
+        rerender();
+        return unsub;
+    }, [
+        store,
+        atom,
+        delay
+    ]);
+    $d4J5n.useDebugValue(value);
+    if ($58ede67fe69e39f7$var$isPromiseLike(value)) {
+        var promise = $58ede67fe69e39f7$var$createContinuablePromise(value);
+        return $58ede67fe69e39f7$var$use(promise);
+    }
+    return value;
+}
+function $58ede67fe69e39f7$var$useSetAtom(atom, options) {
+    var store = $58ede67fe69e39f7$var$useStore(options);
+    var setAtom = $d4J5n.useCallback(function() {
+        for(var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++)args[_key] = arguments[_key];
+        return store.set.apply(store, [
+            atom
+        ].concat(args));
+    }, [
+        store,
+        atom
+    ]);
+    return setAtom;
+}
+function $58ede67fe69e39f7$var$useAtom(atom, options) {
+    return [
+        $58ede67fe69e39f7$var$useAtomValue(atom, options),
+        $58ede67fe69e39f7$var$useSetAtom(atom, options)
+    ];
+}
+$58ede67fe69e39f7$export$2881499e37b75b9a = $58ede67fe69e39f7$var$Provider;
+$58ede67fe69e39f7$export$83cf7ae8bb57e7ed = $58ede67fe69e39f7$var$useAtom;
+$58ede67fe69e39f7$export$89a40582f8c436cc = $58ede67fe69e39f7$var$useAtomValue;
+$58ede67fe69e39f7$export$a247c952d39ea7ea = $58ede67fe69e39f7$var$useSetAtom;
+$58ede67fe69e39f7$export$6ccbb43953eebf8 = $58ede67fe69e39f7$var$useStore;
+
+
+Object.keys($3574c3bf85e5f792$exports).forEach(function(k) {
+    if (k !== 'default' && !Object.prototype.hasOwnProperty.call($12c15ab479c77cab$exports, k)) Object.defineProperty($12c15ab479c77cab$exports, k, {
+        enumerable: true,
+        get: function() {
+            return $3574c3bf85e5f792$exports[k];
+        }
+    });
+});
+Object.keys($58ede67fe69e39f7$exports).forEach(function(k) {
+    if (k !== 'default' && !Object.prototype.hasOwnProperty.call($12c15ab479c77cab$exports, k)) Object.defineProperty($12c15ab479c77cab$exports, k, {
+        enumerable: true,
+        get: function() {
+            return $58ede67fe69e39f7$exports[k];
+        }
+    });
+});
+
+
+
+var $d4J5n = parcelRequire("d4J5n");
+const $42d94ba525918d2f$var$store = (0, $12c15ab479c77cab$exports.getDefaultStore)();
+/**
+ * @typedef {Object} Player
+ * @property {Episode} episode
+ * @property {number} duration
+ * @property {number} currentTime
+ * @property {boolean} paused
+ */ /** @type {Player|undefined} */ let $42d94ba525918d2f$var$initialPlayer;
+const $42d94ba525918d2f$var$playerAtom = (0, $12c15ab479c77cab$exports.atom)($42d94ba525918d2f$var$initialPlayer);
+const $42d94ba525918d2f$var$audioCtx = new Audio();
+$42d94ba525918d2f$var$audioCtx.ontimeupdate = ()=>{
+    const player = $42d94ba525918d2f$var$store.get($42d94ba525918d2f$var$playerAtom);
+    if (!player) return;
+    const currentTime = Math.round($42d94ba525918d2f$var$audioCtx.currentTime);
+    $42d94ba525918d2f$var$store.set($42d94ba525918d2f$var$playerAtom, {
+        ...player,
+        currentTime: currentTime
+    });
+};
+$42d94ba525918d2f$var$audioCtx.onpause = ()=>{
+    const player = $42d94ba525918d2f$var$store.get($42d94ba525918d2f$var$playerAtom);
+    if (!player) return;
+    $42d94ba525918d2f$var$store.set($42d94ba525918d2f$var$playerAtom, {
+        ...player,
+        paused: true
+    });
+};
+$42d94ba525918d2f$var$audioCtx.onplay = ()=>{
+    const player = $42d94ba525918d2f$var$store.get($42d94ba525918d2f$var$playerAtom);
+    if (!player) return;
+    $42d94ba525918d2f$var$store.set($42d94ba525918d2f$var$playerAtom, {
+        ...player,
+        paused: false
+    });
+};
+$42d94ba525918d2f$var$audioCtx.ondurationchange = ()=>{
+    const player = $42d94ba525918d2f$var$store.get($42d94ba525918d2f$var$playerAtom);
+    if (!player) return;
+    const duration = Math.floor($42d94ba525918d2f$var$audioCtx.duration);
+    $42d94ba525918d2f$var$store.set($42d94ba525918d2f$var$playerAtom, {
+        ...player,
+        duration: duration
+    });
+};
+$42d94ba525918d2f$var$audioCtx.onended = ()=>{
+    const player = $42d94ba525918d2f$var$store.get($42d94ba525918d2f$var$playerAtom);
+    if (!player) return;
+    $42d94ba525918d2f$var$store.set($42d94ba525918d2f$var$playerAtom, undefined);
+};
+function $42d94ba525918d2f$export$2f368c3698ad3ace() {
+    const [player, setPlayer] = (0, $12c15ab479c77cab$exports.useAtom)($42d94ba525918d2f$var$playerAtom);
+    const startPlayer = (episode)=>{
+        if (!player || player.episode !== episode) {
+            setPlayer({
+                episode: episode,
+                currentTime: 0
+            });
+            $42d94ba525918d2f$var$audioCtx.src = episode.audio_link;
+        }
+        $42d94ba525918d2f$var$audioCtx.play();
+    };
+    const pausePlayer = ()=>{
+        $42d94ba525918d2f$var$audioCtx.pause();
+    };
+    return {
+        player: player,
+        startPlayer: startPlayer,
+        pausePlayer: pausePlayer
+    };
+}
+function $42d94ba525918d2f$export$2d7502b8f22fe8b9({ episode: episode, seekTrackWidth: seekTrackWidth }) {
+    const episdeDuration = episode.duration;
+    const { player: player } = $42d94ba525918d2f$export$2f368c3698ad3ace();
+    const { duration: duration, ...foo } = (0, $d4J5n.useMemo)(()=>{
+        if (!player) return {
+            isSelected: false,
+            isPlaying: false,
+            duration: episdeDuration,
+            seekBarWidth: 0
+        };
+        const isSelected = player.episode === episode;
+        const isPlaying = isSelected && !player.paused;
+        const duration = isSelected ? player.duration || 0 : episdeDuration;
+        const seekBarWidth = player.currentTime / duration * seekTrackWidth;
+        return {
+            isSelected: isSelected,
+            isPlaying: isPlaying,
+            duration: duration,
+            seekBarWidth: seekBarWidth
+        };
+    }, [
+        player
+    ]);
+    const durationLabel = duration < 60 ? `${duration} s` : `${Math.floor(duration / 60)} m`;
+    return {
+        ...foo,
+        durationLabel: durationLabel
+    };
+}
+
+
 const $0b1c1461691c65cb$var$EpisodeCard = ({ episode: episode, toggleBookmark: toggleBookmark })=>{
     const { title: title, description: description, duration: duration, published_at: published_at, audio_link: audio_link, is_bookmark: is_bookmark, time_of_day: time_of_day } = episode;
     let thumbnailSrc;
@@ -31087,61 +31190,8 @@ const $0b1c1461691c65cb$var$EpisodeCard = ({ episode: episode, toggleBookmark: t
                                 className: "grow text-xs leading-3 text-gray-300",
                                 children: (0, $cc60dda8bfb39212$export$1408a2451dc58071)(published_at)
                             }),
-                            /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
-                                style: {
-                                    "--color": "#FFFFFF"
-                                },
-                                className: "flex items-center justify-between self-stretch",
-                                children: /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
-                                    className: "flex flex-col items-center justify-center overflow-hidden rounded-[100px] bg-[#3A3A3C] py-1.5 pl-[9px] pr-[11px] opacity-95",
-                                    children: /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)("div", {
-                                        className: "flex items-center justify-start gap-[7px]",
-                                        children: [
-                                            /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
-                                                className: "flex flex-col items-start justify-start",
-                                                children: /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
-                                                    className: "text-center text-[13px] leading-none text-[var(--color)]",
-                                                    children: /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $452dd55def83f18c$export$a6630b90defda83f), {
-                                                        width: 12,
-                                                        height: 16
-                                                    })
-                                                })
-                                            }),
-                                            /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)("div", {
-                                                className: "flex items-center justify-start gap-[5px]",
-                                                children: [
-                                                    /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)("div", {
-                                                        className: "relative h-[5px] w-[25px] overflow-hidden rounded-[100px]",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
-                                                                className: "absolute left-0 top-0 h-[5px] w-[25px] bg-[var(--color)] opacity-30"
-                                                            }),
-                                                            /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
-                                                                className: "absolute left-0 top-0 h-[5px] w-[15px] bg-[var(--color)]"
-                                                            })
-                                                        ]
-                                                    }),
-                                                    /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
-                                                        className: "flex h-4 flex-col items-start justify-end pb-[0.50px]",
-                                                        children: /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)("div", {
-                                                            className: "flex items-start justify-end",
-                                                            children: [
-                                                                /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
-                                                                    className: "text-[13px] font-semibold leading-none text-[var(--color)]",
-                                                                    children: (0, $cc60dda8bfb39212$export$6903bfa1af4682a)(duration / 60)
-                                                                }),
-                                                                /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
-                                                                    className: "text-[13px] font-semibold leading-none text-[var(--color)]",
-                                                                    children: "m"
-                                                                })
-                                                            ]
-                                                        })
-                                                    })
-                                                ]
-                                            })
-                                        ]
-                                    })
-                                })
+                            /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)($0b1c1461691c65cb$var$EpisodePlayer, {
+                                episode: episode
                             }),
                             /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
                                 className: "cursor-pointer",
@@ -31156,6 +31206,83 @@ const $0b1c1461691c65cb$var$EpisodeCard = ({ episode: episode, toggleBookmark: t
     });
 };
 var $0b1c1461691c65cb$export$2e2bcd8739ae039 = $0b1c1461691c65cb$var$EpisodeCard;
+function $0b1c1461691c65cb$var$EpisodePlayer({ episode: episode }) {
+    const seekTrackWidth = 25;
+    const color = "#FFFFFF";
+    const { pausePlayer: pausePlayer, startPlayer: startPlayer } = (0, $42d94ba525918d2f$export$2f368c3698ad3ace)();
+    const { isSelected: isSelected, isPlaying: isPlaying, seekBarWidth: seekBarWidth, durationLabel: durationLabel } = (0, $42d94ba525918d2f$export$2d7502b8f22fe8b9)({
+        episode: episode,
+        seekTrackWidth: seekTrackWidth
+    });
+    return /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
+        style: {
+            "--color": color
+        },
+        className: "flex items-center justify-between self-stretch",
+        onClick: ()=>{
+            if (isPlaying) pausePlayer();
+            else startPlayer(episode);
+        },
+        children: /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
+            className: "flex flex-col items-center justify-center overflow-hidden rounded-[100px] bg-[#3A3A3C] py-1.5 pl-[9px] pr-[11px] opacity-95",
+            children: /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)("div", {
+                className: "flex items-center justify-start gap-[7px]",
+                children: [
+                    /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
+                        className: "flex flex-col items-start justify-start",
+                        children: /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
+                            className: "text-center text-[13px] leading-none text-[var(--color)]",
+                            children: isPlaying ? /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $037a7a121b0fa94f$export$9b47433640e5db3a), {
+                                color: color,
+                                width: 12,
+                                height: 16
+                            }) : /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $452dd55def83f18c$export$a6630b90defda83f), {
+                                color: color,
+                                width: 12,
+                                height: 16
+                            })
+                        })
+                    }),
+                    /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)("div", {
+                        className: "flex items-center justify-start gap-[5px]",
+                        children: [
+                            isSelected && /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsxs)("div", {
+                                style: {
+                                    width: seekTrackWidth
+                                },
+                                className: "relative h-[5px] overflow-hidden rounded-[100px]",
+                                children: [
+                                    /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
+                                        style: {
+                                            width: seekTrackWidth
+                                        },
+                                        className: "absolute left-0 top-0 h-[5px] bg-[var(--color)] opacity-30"
+                                    }),
+                                    /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
+                                        style: {
+                                            width: seekBarWidth
+                                        },
+                                        className: "absolute left-0 top-0 h-[5px] w-[15px] bg-[var(--color)]"
+                                    })
+                                ]
+                            }),
+                            /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
+                                className: "flex h-4 flex-col items-start justify-end pb-[0.50px]",
+                                children: /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
+                                    className: "flex items-start justify-end",
+                                    children: /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
+                                        className: "text-[13px] font-semibold leading-none text-[var(--color)]",
+                                        children: durationLabel
+                                    })
+                                })
+                            })
+                        ]
+                    })
+                ]
+            })
+        })
+    });
+}
 
 
 
@@ -31191,6 +31318,7 @@ const $e9838347596a585a$var$episodesService = {
     }
 };
 var $e9838347596a585a$export$2e2bcd8739ae039 = $e9838347596a585a$var$episodesService;
+
 
 
 const $4dba470fd5c3bb15$var$config = {
@@ -31475,31 +31603,12 @@ function $4dba470fd5c3bb15$var$Poster({ episode: episode }) {
 }
 function $4dba470fd5c3bb15$var$EpisodePlayer({ episode: episode }) {
     const seekTrackWidth = 25;
-    const episdeDuration = episode.duration;
     const { color: color } = $4dba470fd5c3bb15$var$config[episode.time_of_day];
-    const { player: player, pausePlayer: pausePlayer, startPlayer: startPlayer } = $4dba470fd5c3bb15$var$usePlayer();
-    const { isSelected: isSelected, isPlaying: isPlaying, duration: duration, seekBarWidth: seekBarWidth } = (0, $d4J5n.useMemo)(()=>{
-        if (!player) return {
-            isSelected: false,
-            isPlaying: false,
-            duration: episdeDuration,
-            seekBarWidth: 0
-        };
-        const isSelected = player.episode === episode;
-        const isPlaying = isSelected && !player.paused;
-        const duration = isSelected ? player.duration || 0 : episdeDuration;
-        const seekBarWidth = player.currentTime / duration * seekTrackWidth;
-        return {
-            isSelected: isSelected,
-            isPlaying: isPlaying,
-            duration: duration,
-            seekBarWidth: seekBarWidth
-        };
-    }, [
-        player
-    ]);
-    const durationLabel = duration < 60 ? `${duration} s` : `${Math.floor(duration / 60)} m`;
-    console.log(duration);
+    const { pausePlayer: pausePlayer, startPlayer: startPlayer } = (0, $42d94ba525918d2f$export$2f368c3698ad3ace)();
+    const { isSelected: isSelected, isPlaying: isPlaying, seekBarWidth: seekBarWidth, durationLabel: durationLabel } = (0, $42d94ba525918d2f$export$2d7502b8f22fe8b9)({
+        episode: episode,
+        seekTrackWidth: seekTrackWidth
+    });
     return /*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)("div", {
         style: {
             "--color": color
@@ -31569,76 +31678,6 @@ function $4dba470fd5c3bb15$var$EpisodePlayer({ episode: episode }) {
 function $4dba470fd5c3bb15$var$cx(...args) {
     return args.filter(Boolean).join(" ");
 }
-const $4dba470fd5c3bb15$var$store = (0, $12c15ab479c77cab$exports.getDefaultStore)();
-/**
- * @typedef {Object} Player
- * @property {Episode} episode
- * @property {number} duration
- * @property {number} currentTime
- * @property {boolean} paused
- */ /** @type {Player|undefined} */ let $4dba470fd5c3bb15$var$initialPlayer;
-const $4dba470fd5c3bb15$var$playerAtom = (0, $12c15ab479c77cab$exports.atom)($4dba470fd5c3bb15$var$initialPlayer);
-const $4dba470fd5c3bb15$var$audioCtx = new Audio();
-$4dba470fd5c3bb15$var$audioCtx.ontimeupdate = ()=>{
-    const player = $4dba470fd5c3bb15$var$store.get($4dba470fd5c3bb15$var$playerAtom);
-    if (!player) return;
-    const currentTime = Math.round($4dba470fd5c3bb15$var$audioCtx.currentTime);
-    $4dba470fd5c3bb15$var$store.set($4dba470fd5c3bb15$var$playerAtom, {
-        ...player,
-        currentTime: currentTime
-    });
-};
-$4dba470fd5c3bb15$var$audioCtx.onpause = ()=>{
-    const player = $4dba470fd5c3bb15$var$store.get($4dba470fd5c3bb15$var$playerAtom);
-    if (!player) return;
-    $4dba470fd5c3bb15$var$store.set($4dba470fd5c3bb15$var$playerAtom, {
-        ...player,
-        paused: true
-    });
-};
-$4dba470fd5c3bb15$var$audioCtx.onplay = ()=>{
-    const player = $4dba470fd5c3bb15$var$store.get($4dba470fd5c3bb15$var$playerAtom);
-    if (!player) return;
-    $4dba470fd5c3bb15$var$store.set($4dba470fd5c3bb15$var$playerAtom, {
-        ...player,
-        paused: false
-    });
-};
-$4dba470fd5c3bb15$var$audioCtx.ondurationchange = ()=>{
-    const player = $4dba470fd5c3bb15$var$store.get($4dba470fd5c3bb15$var$playerAtom);
-    if (!player) return;
-    const duration = Math.floor($4dba470fd5c3bb15$var$audioCtx.duration);
-    $4dba470fd5c3bb15$var$store.set($4dba470fd5c3bb15$var$playerAtom, {
-        ...player,
-        duration: duration
-    });
-};
-$4dba470fd5c3bb15$var$audioCtx.onended = ()=>{
-    const player = $4dba470fd5c3bb15$var$store.get($4dba470fd5c3bb15$var$playerAtom);
-    if (!player) return;
-    $4dba470fd5c3bb15$var$store.set($4dba470fd5c3bb15$var$playerAtom, undefined);
-};
-function $4dba470fd5c3bb15$var$usePlayer() {
-    const [player, setPlayer] = (0, $12c15ab479c77cab$exports.useAtom)($4dba470fd5c3bb15$var$playerAtom);
-    const startPlayer = (episode)=>{
-        if (!player || player.episode !== episode) {
-            setPlayer({
-                episode: episode,
-                currentTime: 0
-            });
-            $4dba470fd5c3bb15$var$audioCtx.src = episode.audio_link;
-        }
-        $4dba470fd5c3bb15$var$audioCtx.play();
-    };
-    const pausePlayer = ()=>{
-        $4dba470fd5c3bb15$var$audioCtx.pause();
-    };
-    return {
-        player: player,
-        startPlayer: startPlayer,
-        pausePlayer: pausePlayer
-    };
-}
 
 
 
@@ -31647,4 +31686,4 @@ const $3da87ddc4a220fcd$var$root = (0, $fef8548889890d4d$export$882461b6382ed46c
 $3da87ddc4a220fcd$var$root.render(/*#__PURE__*/ (0, $17b288f07ec57b56$exports.jsx)((0, $4dba470fd5c3bb15$export$86fbec116b87613f), {}));
 
 
-//# sourceMappingURL=index.e6d97579.js.map
+//# sourceMappingURL=index.0bc1288e.js.map
