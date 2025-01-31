@@ -15,7 +15,7 @@ def create_episode(episode: EpisodeCreate):
         episode.time_of_day = episode.time_of_day.value
     query = text("INSERT INTO episodes (title, description, duration, audio_link, is_bookmark, is_deleted, time_of_day) VALUES (:title, :description, :duration, :audio_link, :is_bookmark, :is_deleted, :time_of_day) RETURNING *")
     new_episode = execute(query, params=episode.model_dump())
-    return new_episode
+    return new_episode[0]
 
 @api_router.get("/{episode_id}", response_model=EpisodeResponse)
 def get_episode(episode_id: int):
