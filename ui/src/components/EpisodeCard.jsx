@@ -39,7 +39,7 @@ const EpisodeCard = ({ episode, toggleBookmark }) => {
   }
 
   return (
-    <div className="flex w-full min-w-96 gap-2 border-b border-[#3A3A3C] bg-black p-5">
+    <div className="flex w-full gap-2 border-b border-[#3A3A3C] p-5">
       <img className="h-11 w-11 rounded-md" src={thumbnailSrc} />
       <div className="gap-0.25 flex grow flex-col overflow-hidden">
         <div className="text-base font-semibold leading-5 text-white">

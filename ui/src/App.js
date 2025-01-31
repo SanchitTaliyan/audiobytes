@@ -3,29 +3,33 @@ import { useEffect, useState } from "react";
 import EndOfDayImg from "assets/eod.png";
 import MorningImg from "assets/morning.png";
 import WeeklyImg from "assets/weekly.png";
+import MidImg from "assets/mid.png";
 import EpisodeCard from "./components/EpisodeCard";
 import { BookmarkFilledIcon, CloseIcon, PlayIcon } from "icons";
 import episodesService from "./services/episodesService";
 import { EPISODE_TYPE } from "./constants/enums";
+import { isToday, isYesterday } from "date-fns";
 
 const config = {
-  morning: {
+  [EPISODE_TYPE.MORNING]: {
     title: "Morning Brief",
     color: "#6f2dbd",
     img: MorningImg,
-    key: "morning",
   },
-  endOfDay: {
+  [EPISODE_TYPE.MIDDAY]: {
+    title: "MIdday Report",
+    color: "#FFB834",
+    img: MidImg,
+  },
+  [EPISODE_TYPE.EOD]: {
     title: "End of Day Recap",
     color: "#D01051",
     img: EndOfDayImg,
-    key: "eod",
   },
-  weekly: {
+  [EPISODE_TYPE.WEEKLY]: {
     title: "Weekly Wrap-Up",
     color: "#380B94",
     img: WeeklyImg,
-    key: "weekly",
   },
 };
 
@@ -36,8 +40,28 @@ const intialFilters = {
   weekly: false,
 };
 
+/**
+ * @typedef {Object} Episode
+ *
+ * server properties
+ * @property {string} id
+ * @property {string} title
+ * @property {string} description
+ * @property {number} duration
+ * @property {Date} published_at
+ * @property {string} audio_link
+ * @property {boolean} is_bookmark
+ * @property {boolean} is_deleted
+ *
+ * local properties
+ * @property {boolean} today
+ */
+
+/** @type {Record<string, Episode>} */
+const initialEpisodesList = {};
+
 export function App() {
-  const [episodesList, setEpisodesList] = useState({});
+  const [episodesList, setEpisodesList] = useState(initialEpisodesList);
   const [filters, setFilters] = useState(intialFilters);
 
   const toogleBookmark = async (id, bookmark) => {
@@ -60,7 +84,9 @@ export function App() {
     const fetchAllEpisodes = async () => {
       try {
         const episodesList = await episodesService.getAllEpisodes();
-        console.log(episodesList.body);
+        episodesList.forEach((ep) => {
+          ep.today = isToday(ep.published_at) || isYesterday(ep.published_at);
+        });
         setEpisodesList(keyBy(episodesList, "id"));
       } catch (error) {
         console.log(error);
@@ -84,11 +110,14 @@ export function App() {
     return filtersArray.includes(episode.time_of_day);
   });
 
+  // ignore filters for today's episodes
+  const todayEpisodes = Object.values(episodesList).filter((ep) => ep.today);
+
   return (
     <>
       <title>Today's Brief</title>
 
-      <div className="relative h-screen flex-1 overflow-y-auto bg-[#0A0A0A]">
+      <div className="flex flex-1 flex-col overflow-y-auto">
         <div className="flex h-9 flex-col items-start justify-start px-5 pt-2">
           <div className="flex items-center justify-start gap-1">
             <div className="text-[22px] font-bold leading-7 text-white">
@@ -97,79 +126,69 @@ export function App() {
           </div>
         </div>
 
-        <div className="no-scrollbar flex flex-row gap-4 overflow-auto px-5 pb-[30px] pt-[10px]">
-          {Object.entries(config).map(([k, v]) => (
-            <Poster key={k} color={v.color} img={v.img} />
+        <div className="no-scrollbar flex flex-shrink-0 flex-row gap-4 overflow-auto px-5 pb-[30px] pt-[10px]">
+          {todayEpisodes.map((ep) => (
+            <Poster
+              key={ep.id}
+              color={config[ep.time_of_day].color}
+              img={config[ep.time_of_day].img}
+            />
           ))}
         </div>
 
-        <div className="sticky top-0">
-          <div className="inline-flex h-[74px] flex-col items-start justify-start px-5 py-3">
-            <div className="flex flex-col items-start justify-start gap-px pb-px">
-              <div className="inline-flex items-center justify-start gap-1">
-                <div className="font-['Inter'] text-[22px] font-bold leading-7 text-white">
-                  Catch Up on Past Briefs
-                </div>
-              </div>
-              <div className="font-['Inter'] text-[15px] font-normal leading-tight text-[#757575]">
-                {episodes.length} Episodes
+        <div className="sticky top-0 z-10 flex h-[74px] flex-col items-start justify-start bg-[#0A0A0A] px-5 py-3">
+          <div className="flex flex-col items-start justify-start gap-px pb-px">
+            <div className="flex items-center justify-start gap-1">
+              <div className="font-['Inter'] text-[22px] font-bold leading-7 text-white">
+                Catch Up on Past Briefs
               </div>
             </div>
-          </div>
-          <div className="no-scrollbar flex h-14 flex-row items-center justify-start gap-2 overflow-auto px-5 py-3">
-            <Filter
-              active={filters.bookmark}
-              value="bookmark"
-              icon={
-                filters.bookmark ? (
-                  <BookmarkFilledIcon
-                    color="currentColor"
-                    width={16}
-                    height={16}
-                  />
-                ) : (
-                  <BookmarkFilledIcon
-                    color="currentColor"
-                    width={16}
-                    height={16}
-                  />
-                )
-              }
-              label="Bookmarks"
-              onFilterClick={handleFilterClick}
-            />
-
-            <div className="h-7 border border-white/20" />
-
-            <Filter
-              active={filters.morning}
-              value="morning"
-              label={config.morning.title}
-              onFilterClick={handleFilterClick}
-            />
-            <Filter
-              active={filters.eod}
-              value="eod"
-              label={config.endOfDay.title}
-              onFilterClick={handleFilterClick}
-            />
-            <Filter
-              active={filters.weekly}
-              value="weekly"
-              label={config.weekly.title}
-              onFilterClick={handleFilterClick}
-            />
-          </div>
-          <div className="no-scrollbar h-[calc(100vh-130px)] overflow-y-auto">
-            {episodes.map((episode) => (
-              <EpisodeCard
-                key={episode.id}
-                episode={episode}
-                toggleBookmark={toogleBookmark}
-              />
-            ))}
+            <div className="font-['Inter'] text-[15px] font-normal leading-tight text-[#757575]">
+              {episodes.length} Episodes
+            </div>
           </div>
         </div>
+
+        <div className="no-scrollbar flex h-14 flex-shrink-0 flex-row items-center justify-start gap-2 overflow-x-auto px-5">
+          <Filter
+            active={filters.bookmark}
+            value="bookmark"
+            icon={
+              <BookmarkFilledIcon color="currentColor" width={16} height={16} />
+            }
+            label="Bookmarks"
+            onFilterClick={handleFilterClick}
+          />
+
+          <div className="h-7 border border-white/20" />
+
+          <Filter
+            active={filters.morning}
+            value="morning"
+            label={config.MORNING.title}
+            onFilterClick={handleFilterClick}
+          />
+          <Filter
+            active={filters.eod}
+            value="eod"
+            label={config.ENDOFDAY.title}
+            onFilterClick={handleFilterClick}
+          />
+          <Filter
+            active={filters.weekly}
+            value="weekly"
+            label={config.WEEKLY.title}
+            onFilterClick={handleFilterClick}
+          />
+        </div>
+
+        {episodes.map((episode) => (
+          <EpisodeCard
+            key={episode.id}
+            episode={episode}
+            toggleBookmark={toogleBookmark}
+          />
+        ))}
       </div>
     </>
   );
@@ -179,24 +198,14 @@ function Filter({ active, icon, label, value, onFilterClick }) {
   return (
     <div
       className={cx(
-        "flex shrink-0 items-center justify-center gap-2 rounded-[100px] border border-white/20 px-3 py-2",
+        "flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-[100px] border border-white/20 px-3 py-2",
         active ? "bg-white text-[#0A0A0A]" : "bg-[#3a3a3c] text-white",
       )}
-      onClick={() => onFilterClick(value, true)}
+      onClick={() => onFilterClick(value, !active)}
     >
       {icon}
       <div className="text-[13px] font-semibold leading-none">{label}</div>
-      {active && (
-        <div
-          className="cursor-pointer"
-          onClick={(e) => {
-            e.stopPropagation();
-            onFilterClick(value, false);
-          }}
-        >
-          <CloseIcon color="#0A0A0A" width={16} height={16} />{" "}
-        </div>
-      )}
+      {active && <CloseIcon color="#0A0A0A" width={16} height={16} />}
     </div>
   );
 }
