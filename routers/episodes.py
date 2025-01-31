@@ -30,7 +30,7 @@ def list_episodes(
     time_of_day: TimeOfDay = Query(None, description="Filter by time of day")
 ):
     # Start building the query
-    query = "SELECT * FROM episodes WHERE 1=1"
+    query = "SELECT * FROM episodes WHERE 1=1 AND is_deleted=false"
     
     # Add filter for is_bookmark if provided
     if is_bookmark is not None:
