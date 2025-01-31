@@ -64,4 +64,4 @@ if __name__ == "__main__":
     response = convert_text_to_speech(
         body=TextToSpeechRegisterRequest(text=text)
     )
-    print(response.body)
+    print(response)

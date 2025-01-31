@@ -40,6 +40,9 @@ class Config:
     REDIS_PORT = os.getenv("REDIS_PORT")
     REDIS_DATABASE = os.getenv("REDIS_DATABASE")
 
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    openai_organization_id = os.getenv("OPENAI_ORGANISATION_ID")
+
     redis_client_collection: dict[str, redis.Redis] = {}
     @staticmethod
     def redis_client(REDIS_DATABASE=None):

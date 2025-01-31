@@ -4,6 +4,16 @@ uvicorn==0.34.0
 python_dotenv==1.0.1
 SQLAlchemy==2.0.37
 psycopg2-binary==2.9.10
-boto3==1.36.10
+boto3
 celery==5.4.0
 rabbitmq==0.2.0
+langchain==0.2.5
+langchainhub==0.1.20
+langchain-aws==0.1.11
+langchain-community==0.2.5
+langchain-core==0.2.18
+langchain-huggingface==0.0.3
+langchain-openai==0.1.16
+langchain-text-splitters==0.2.2
+langsmith==0.1.99
+langserve==0.2.2
