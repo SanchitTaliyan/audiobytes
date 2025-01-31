@@ -49,9 +49,10 @@ def list_episodes(
 def update_episode(episode_id: int, episode: EpisodeUpdate):
     query = text("SELECT * FROM episodes WHERE id = :episode_id")
     existing_episodes = execute(query, params={"episode_id": episode_id})
-    existing_episode = existing_episodes[0]
-    if not existing_episode:
+    if not existing_episodes or len(existing_episodes) == 0:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Episode not found")
+    existing_episode = existing_episodes[0]
+    print("existing_episode:", existing_episode)
     for key, value in episode.model_dump().items():
         setattr(existing_episode, key, value)
     query = text("UPDATE episodes SET title = :title, description = :description, duration = :duration, audio_link = :audio_link, is_bookmark = :is_bookmark, is_deleted = :is_deleted WHERE id = :episode_id")
@@ -62,9 +63,9 @@ def update_episode(episode_id: int, episode: EpisodeUpdate):
 def delete_episode(episode_id: int):
     query = text("SELECT * FROM episodes WHERE id = :episode_id")
     existing_episodes = execute(query, params={"episode_id": episode_id})
-    existing_episode = existing_episodes[0]
-    if not existing_episode:
+    if not existing_episodes and len(existing_episodes) == 0:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Episode not found")
+    # existing_episode = existing_episodes[0]
     query = text("DELETE FROM episodes WHERE id = :episode_id")
     execute(query, params={"episode_id": episode_id})
     return {"detail": "Episode deleted successfully"}
