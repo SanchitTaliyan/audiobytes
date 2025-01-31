@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 from config import cfg
 from routers import episodes
@@ -11,6 +13,12 @@ if not cfg.project_name:
 app = FastAPI(
     title=cfg.project_name,
     debug=True,
+)
+
+app.mount(
+    "/static",
+    StaticFiles(directory="static"),
+    name="static",
 )
 
 allowed_origins: list[str] = []
@@ -34,6 +42,8 @@ app.include_router(
     tags=["AudioByte Api's"]
 )
 
-@app.get("/")
+
+@app.get("/", response_class=HTMLResponse)
 def read_root():
-    return {"message": "Hello World!"}
+    html = open("static/index.html", "r").read()
+    return html
