@@ -11,7 +11,8 @@ execute = db_manager.execute
 
 @api_router.post("/", response_model=EpisodeResponse)
 def create_episode(episode: EpisodeCreate):
-    episode.time_of_day = episode.time_of_day.value
+    if isinstance(episode.time_of_day, TimeOfDay):
+        episode.time_of_day = episode.time_of_day.value
     query = text("INSERT INTO episodes (title, description, duration, audio_link, is_bookmark, is_deleted, time_of_day) VALUES (:title, :description, :duration, :audio_link, :is_bookmark, :is_deleted, :time_of_day) RETURNING *")
     new_episode = execute(query, params=episode.model_dump())
     return new_episode
