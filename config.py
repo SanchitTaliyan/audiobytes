@@ -80,11 +80,13 @@ class DatabaseManager:
             SessionLocal = self.get_session(db_url)
             session = SessionLocal()
             yield session
+            session.commit()
         except Exception as e:
             if session:
                 session.rollback()
             raise e
         finally:
+            session.refresh()
             if session:
                 session.close() 
 

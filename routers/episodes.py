@@ -62,9 +62,6 @@ def update_episode(episode_id: int, episode: EpisodeUpdate):
     query = text("UPDATE episodes SET title = :title, description = :description, duration = :duration, audio_link = :audio_link, is_bookmark = :is_bookmark, is_deleted = :is_deleted WHERE id = :id")
     execute(query, params=existing_episode)
 
-    with db_manager.get_db() as session:
-        session.commit()
-
     return existing_episode
 
 @api_router.delete("/{episode_id}")
