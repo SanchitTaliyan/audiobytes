@@ -40,8 +40,15 @@ def list_episodes(
     if time_of_day is not None:
         query = query + f" AND time_of_day = :time_of_day"
     
+    time_of_day_str = None
+    if time_of_day is not None:
+        if isinstance(time_of_day, TimeOfDay):
+            time_of_day_str = time_of_day.value
+        else:
+            time_of_day_str = time_of_day
+
     # Execute the query with the filters applied
-    res = execute(text(query), {"is_bookmark": is_bookmark, "time_of_day": time_of_day})
+    res = execute(text(query), {"is_bookmark": is_bookmark, "time_of_day": time_of_day_str})
     
     return res
 
