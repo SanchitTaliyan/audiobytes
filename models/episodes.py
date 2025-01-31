@@ -21,7 +21,7 @@ class Episode(Base):
     audio_link = Column(String, nullable=False)
     is_bookmark = Column(Boolean, default=False)
     is_deleted = Column(Boolean, default=False)
-    time_of_day = Column(Enum(*[enum.value for enum in TimeOfDay], name="episode_time"), nullable=False)
+    time_of_day: Column[Enum] = Column(Enum(*[enum.value for enum in TimeOfDay], name="episode_time"), nullable=False)
 
     # Creating indexes for is_bookmark and time_of_day columns
     __table_args__ = (

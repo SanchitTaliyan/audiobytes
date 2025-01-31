@@ -1,7 +1,7 @@
-from boto3 import Session as boto3_session
+from boto3 import Session as boto3_session # type: ignore
 from fastapi import APIRouter, Body, HTTPException, status
 from fastapi.responses import JSONResponse
-from botocore.exceptions import ClientError
+from botocore.exceptions import ClientError # type: ignore
 from uuid import uuid4
 
 from config import cfg

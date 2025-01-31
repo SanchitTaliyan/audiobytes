@@ -31,6 +31,15 @@ class Config:
     AWS_S3_BUCKET_NAME = os.getenv("AWS_S3_BUCKET_NAME")
     AWS_POLLY_VOICE_ID = os.getenv("AWS_POLLY_VOICE_ID")
 
+    RABBITMQ_HOST = os.getenv("RABBITMQ_HOST")
+    RABBITMQ_PORT = os.getenv("RABBITMQ_PORT")
+    RABBITMQ_USERNAME = os.getenv("RABBITMQ_USERNAME")
+    RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD")
+
+    REDIS_HOST = os.getenv("REDIS_HOST")
+    REDIS_PORT = os.getenv("REDIS_PORT")
+    REDIS_DATABASE = os.getenv("REDIS_DATABASE")
+
     redis_client_collection: dict[str, redis.Redis] = {}
     @staticmethod
     def redis_client(REDIS_DATABASE=None):
