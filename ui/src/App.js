@@ -1,40 +1,59 @@
-import { keyBy } from 'lodash-es';
-import { useEffect, useState } from 'react';
+import { keyBy } from "lodash-es";
+import { useEffect, useState } from "react";
 import EndOfDayImg from "assets/eod.png";
 import MorningImg from "assets/morning.png";
 import WeeklyImg from "assets/weekly.png";
-import EpisodeCard from './components/EpisodeCard';
+import EpisodeCard from "./components/EpisodeCard";
 import { BookmarkFilledIcon, CloseIcon, PlayIcon } from "icons";
-import episodesService from './services/episodesService';
+import episodesService from "./services/episodesService";
+import { EPISODE_TYPE } from "./constants/enums";
 
 const config = {
   morning: {
     title: "Morning Brief",
     color: "#6f2dbd",
     img: MorningImg,
+    key: "morning",
   },
   endOfDay: {
     title: "End of Day Recap",
     color: "#D01051",
     img: EndOfDayImg,
+    key: "eod",
   },
   weekly: {
     title: "Weekly Wrap-Up",
     color: "#380B94",
     img: WeeklyImg,
+    key: "weekly",
   },
+};
+
+const intialFilters = {
+  bookmark: false,
+  morning: false,
+  eod: false,
+  weekly: false,
 };
 
 export function App() {
   const [episodesList, setEpisodesList] = useState({});
+  const [filters, setFilters] = useState(intialFilters);
 
   const toogleBookmark = async (id, bookmark) => {
     try {
-      const updatedEpisode = await episodesService.toogleBookmark({ episodeId: id, bookmark });
+      const updatedEpisode = await episodesService.toogleBookmark({
+        episodeId: id,
+        bookmark,
+      });
       setEpisodesList((prev) => ({ ...prev, [id]: updatedEpisode }));
     } catch (error) {
-      console.log('Failed to update episode bookmark', error);
+      console.log("Failed to update episode bookmark", error);
     }
+  };
+
+  const handleFilterClick = (filter, value) => {
+    setFilters((prev) => ({ ...prev, [filter]: value }));
   };
 
   useEffect(() => {
@@ -42,7 +61,7 @@ export function App() {
       try {
         const episodesList = await episodesService.getAllEpisodes();
         console.log(episodesList.body);
-        setEpisodesList(keyBy(episodesList, 'id'));
+        setEpisodesList(keyBy(episodesList, "id"));
       } catch (error) {
         console.log(error);
       }
@@ -50,13 +69,26 @@ export function App() {
     fetchAllEpisodes();
   }, []);
 
-  const episodes = Object.values(episodesList);
+  const episodes = Object.values(episodesList).filter((episode) => {
+    const { bookmark, morning, eod, weekly } = filters;
+    if (bookmark && !episode.is_bookmark) return false;
+
+    const filtersArray = [
+      morning && EPISODE_TYPE.MORNING,
+      eod && EPISODE_TYPE.EOD,
+      weekly && EPISODE_TYPE.WEEKLY,
+    ].filter((val) => !!val);
+
+    if (!filtersArray.length) return true;
+
+    return filtersArray.includes(episode.time_of_day);
+  });
 
   return (
     <>
       <title>Today's Brief</title>
 
-      <div className="flex-1 bg-[#0A0A0A] overflow-y-auto">
+      <div className="relative h-screen flex-1 overflow-y-auto bg-[#0A0A0A]">
         <div className="flex h-9 flex-col items-start justify-start px-5 pt-2">
           <div className="flex items-center justify-start gap-1">
             <div className="text-[22px] font-bold leading-7 text-white">
@@ -71,54 +103,100 @@ export function App() {
           ))}
         </div>
 
-        <div className="inline-flex h-[74px] flex-col items-start justify-start px-5 py-3">
-          <div className="flex flex-col items-start justify-start gap-px pb-px">
-            <div className="inline-flex items-center justify-start gap-1">
-              <div className="font-['Inter'] text-[22px] font-bold leading-7 text-white">
-                Catch Up on Past Briefs
+        <div className="sticky top-0">
+          <div className="inline-flex h-[74px] flex-col items-start justify-start px-5 py-3">
+            <div className="flex flex-col items-start justify-start gap-px pb-px">
+              <div className="inline-flex items-center justify-start gap-1">
+                <div className="font-['Inter'] text-[22px] font-bold leading-7 text-white">
+                  Catch Up on Past Briefs
+                </div>
+              </div>
+              <div className="font-['Inter'] text-[15px] font-normal leading-tight text-[#757575]">
+                {episodes.length} Episodes
               </div>
             </div>
-            <div className="font-['Inter'] text-[15px] font-normal leading-tight text-[#757575]">
-              {episodes.length} Episodes
-            </div>
           </div>
-        </div>
-        <div className="no-scrollbar flex h-14 flex-row items-center justify-start gap-2 overflow-auto px-5 py-3">
-          <Filter
-            active
-            icon={
-              <BookmarkFilledIcon color="currentColor" width={16} height={16} />
-            }
-            label="Bookmarks"
-          />
+          <div className="no-scrollbar flex h-14 flex-row items-center justify-start gap-2 overflow-auto px-5 py-3">
+            <Filter
+              active={filters.bookmark}
+              value="bookmark"
+              icon={
+                filters.bookmark ? (
+                  <BookmarkFilledIcon
+                    color="currentColor"
+                    width={16}
+                    height={16}
+                  />
+                ) : (
+                  <BookmarkFilledIcon
+                    color="currentColor"
+                    width={16}
+                    height={16}
+                  />
+                )
+              }
+              label="Bookmarks"
+              onFilterClick={handleFilterClick}
+            />
 
-          <div className="h-7 border border-white/20" />
+            <div className="h-7 border border-white/20" />
 
-          <Filter active label={config.morning.title} />
-          <Filter label={config.endOfDay.title} />
-          <Filter label={config.weekly.title} />
-        </div>
-        <div>
-          {episodes.map((episode) => 
-            <EpisodeCard key={episode.id} episode={episode} toggleBookmark={toogleBookmark} />
-          )}
+            <Filter
+              active={filters.morning}
+              value="morning"
+              label={config.morning.title}
+              onFilterClick={handleFilterClick}
+            />
+            <Filter
+              active={filters.eod}
+              value="eod"
+              label={config.endOfDay.title}
+              onFilterClick={handleFilterClick}
+            />
+            <Filter
+              active={filters.weekly}
+              value="weekly"
+              label={config.weekly.title}
+              onFilterClick={handleFilterClick}
+            />
+          </div>
+          <div className="no-scrollbar h-[calc(100vh-130px)] overflow-y-auto">
+            {episodes.map((episode) => (
+              <EpisodeCard
+                key={episode.id}
+                episode={episode}
+                toggleBookmark={toogleBookmark}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </>
   );
 }
 
-function Filter({ active, icon, label }) {
+function Filter({ active, icon, label, value, onFilterClick }) {
   return (
     <div
       className={cx(
         "flex shrink-0 items-center justify-center gap-2 rounded-[100px] border border-white/20 px-3 py-2",
         active ? "bg-white text-[#0A0A0A]" : "bg-[#3a3a3c] text-white",
       )}
+      onClick={() => onFilterClick(value, true)}
     >
       {icon}
       <div className="text-[13px] font-semibold leading-none">{label}</div>
-      {active && <CloseIcon color="#0A0A0A" width={16} height={16} />}
+      {active && (
+        <div
+          className="cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            onFilterClick(value, false);
+          }}
+        >
+          <CloseIcon color="#0A0A0A" width={16} height={16} />{" "}
+        </div>
+      )}
     </div>
   );
 }
