@@ -30,7 +30,7 @@ queue_config = {
 }
 
 celery_path = "/venv/bin/celery"
-log_path = "/home/ubuntu/audiobytes/logs"
+log_path = "/home/ec2-user/audiobytes/logs"
 
 if __name__ == "__main__":
 
