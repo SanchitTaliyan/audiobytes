@@ -1,14 +1,16 @@
-import { keyBy } from "lodash-es";
-import { useEffect, useState } from "react";
 import EndOfDayImg from "assets/eod.png";
+import MidImg from "assets/mid.png";
 import MorningImg from "assets/morning.png";
 import WeeklyImg from "assets/weekly.png";
-import MidImg from "assets/mid.png";
-import EpisodeCard from "./components/EpisodeCard";
-import { BookmarkFilledIcon, CloseIcon, PlayIcon } from "icons";
-import episodesService from "./services/episodesService";
-import { EPISODE_TYPE } from "./constants/enums";
 import { isToday, isYesterday } from "date-fns";
+import { BookmarkFilledIcon, CloseIcon, PlayIcon } from "icons";
+import { atom, getDefaultStore, useAtom } from "jotai";
+import { keyBy } from "lodash-es";
+import { useEffect, useMemo, useState } from "react";
+import EpisodeCard from "./components/EpisodeCard";
+import { PauseIcon } from "./components/icons";
+import { EPISODE_TYPE } from "./constants/enums";
+import episodesService from "./services/episodesService";
 
 const config = {
   [EPISODE_TYPE.MORNING]: {
@@ -128,11 +130,7 @@ export function App() {
 
         <div className="no-scrollbar flex flex-shrink-0 flex-row gap-4 overflow-auto px-5 pb-[30px] pt-[10px]">
           {todayEpisodes.map((ep) => (
-            <Poster
-              key={ep.id}
-              color={config[ep.time_of_day].color}
-              img={config[ep.time_of_day].img}
-            />
+            <Poster key={ep.id} episode={ep} />
           ))}
         </div>
 
@@ -210,11 +208,15 @@ function Filter({ active, icon, label, value, onFilterClick }) {
   );
 }
 
-function Poster({ color, img }) {
+function Poster({ episode }) {
+  const { color, img } = config[episode.time_of_day];
+
   return (
     <div
       style={{ "--color": color }}
-      className="flex h-[356px] flex-col items-start justify-start rounded-[14px] bg-[var(--color)]"
+      className={
+        "flex h-[356px] flex-col items-start justify-start rounded-[14px] bg-[var(--color)]"
+      }
     >
       <div className="flex h-[356px] w-[267px] flex-col items-start justify-start overflow-hidden bg-black/10 shadow-[0px_6px_12px_0px_rgba(0,0,0,0.10)]">
         <div className="flex h-[210px] flex-col items-center justify-center self-stretch pb-[18px] pt-7">
@@ -248,31 +250,7 @@ function Poster({ color, img }) {
             </div>
           </div>
           <div className="flex items-center justify-between self-stretch">
-            <div className="flex flex-col items-center justify-center overflow-hidden rounded-[100px] bg-white py-1.5 pl-[9px] pr-[11px] opacity-95">
-              <div className="flex items-center justify-start gap-[7px]">
-                <div className="flex flex-col items-start justify-start">
-                  <div className="text-center text-[13px] leading-none text-[var(--color)]">
-                    <PlayIcon color={color} width={12} height={16} />
-                  </div>
-                </div>
-                <div className="flex items-center justify-start gap-[5px]">
-                  <div className="relative h-[5px] w-[25px] overflow-hidden rounded-[100px]">
-                    <div className="absolute left-0 top-0 h-[5px] w-[25px] bg-[var(--color)] opacity-30" />
-                    <div className="absolute left-0 top-0 h-[5px] w-[15px] bg-[var(--color)]" />
-                  </div>
-                  <div className="flex h-4 flex-col items-start justify-end pb-[0.50px]">
-                    <div className="flex items-start justify-end">
-                      <div className="text-[13px] font-semibold leading-none text-[var(--color)]">
-                        11
-                      </div>
-                      <div className="text-[13px] font-semibold leading-none text-[var(--color)]">
-                        m
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <EpisodePlayer color={color} episode={episode} />
             <div className="flex items-center justify-start gap-3.5">
               <div className="relative h-6 w-6 overflow-hidden" />
             </div>
@@ -283,6 +261,157 @@ function Poster({ color, img }) {
   );
 }
 
+function EpisodePlayer({ episode }) {
+  const seekTrackWidth = 25;
+
+  const episdeDuration = episode.duration;
+  const { color } = config[episode.time_of_day];
+
+  const { player, pausePlayer, startPlayer } = usePlayer();
+  const { isSelected, isPlaying, duration, seekBarWidth } = useMemo(() => {
+    if (!player)
+      return {
+        isSelected: false,
+        isPlaying: false,
+        duration: episdeDuration,
+        seekBarWidth: 0,
+      };
+
+    const isSelected = player.episode === episode;
+    const isPlaying = isSelected && !player.paused;
+
+    const duration = isSelected ? player.duration || 0 : episdeDuration;
+
+    const seekBarWidth = (player.currentTime / duration) * seekTrackWidth;
+
+    return {
+      isSelected,
+      isPlaying,
+      duration,
+      seekBarWidth,
+    };
+  }, [player]);
+
+  const durationLabel =
+    duration < 60 ? `${duration} s` : `${Math.floor(duration / 60)} m`;
+
+  console.log(duration);
+
+  return (
+    <div
+      style={{ "--color": color }}
+      className="flex flex-col items-center justify-center overflow-hidden rounded-[100px] bg-white py-1.5 pl-[9px] pr-[11px] opacity-95"
+      onClick={() => {
+        if (isPlaying) pausePlayer();
+        else startPlayer(episode);
+      }}
+    >
+      <div className="flex items-center justify-start gap-[7px]">
+        <div className="flex flex-col items-start justify-start">
+          <div className="text-center text-[13px] leading-none text-[var(--color)]">
+            {isPlaying ? (
+              <PauseIcon color={color} width={12} height={16} />
+            ) : (
+              <PlayIcon color={color} width={12} height={16} />
+            )}
+          </div>
+        </div>
+
+        <div className="flex items-center justify-start gap-[5px]">
+          {isSelected && (
+            <div
+              style={{ width: seekTrackWidth }}
+              className="relative h-[5px] overflow-hidden rounded-[100px]"
+            >
+              <div
+                style={{ width: seekTrackWidth }}
+                className="absolute left-0 top-0 h-[5px] bg-[var(--color)] opacity-30"
+              />
+              <div
+                style={{ width: seekBarWidth }}
+                className="absolute left-0 top-0 h-[5px] w-[15px] bg-[var(--color)]"
+              />
+            </div>
+          )}
+
+          <div className="flex h-4 flex-col items-start justify-end pb-[0.50px]">
+            <div className="flex items-start justify-end">
+              <div className="text-[13px] font-semibold leading-none text-[var(--color)]">
+                {durationLabel}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function cx(...args) {
   return args.filter(Boolean).join(" ");
+}
+
+const store = getDefaultStore();
+
+/**
+ * @typedef {Object} Player
+ * @property {Episode} episode
+ * @property {number} duration
+ * @property {number} currentTime
+ * @property {boolean} paused
+ */
+/** @type {Player|undefined} */
+let initialPlayer;
+const playerAtom = atom(initialPlayer);
+
+const audioCtx = new Audio();
+
+audioCtx.ontimeupdate = () => {
+  const player = store.get(playerAtom);
+  if (!player) return;
+  const currentTime = Math.round(audioCtx.currentTime);
+  store.set(playerAtom, { ...player, currentTime });
+};
+
+audioCtx.onpause = () => {
+  const player = store.get(playerAtom);
+  if (!player) return;
+  store.set(playerAtom, { ...player, paused: true });
+};
+
+audioCtx.onplay = () => {
+  const player = store.get(playerAtom);
+  if (!player) return;
+  store.set(playerAtom, { ...player, paused: false });
+};
+
+audioCtx.ondurationchange = () => {
+  const player = store.get(playerAtom);
+  if (!player) return;
+  const duration = Math.floor(audioCtx.duration);
+  store.set(playerAtom, { ...player, duration });
+};
+
+audioCtx.onended = () => {
+  const player = store.get(playerAtom);
+  if (!player) return;
+  store.set(playerAtom, undefined);
+};
+
+function usePlayer() {
+  const [player, setPlayer] = useAtom(playerAtom);
+
+  const startPlayer = (episode) => {
+    if (!player || player.episode !== episode) {
+      setPlayer({ episode, currentTime: 0 });
+      audioCtx.src = episode.audio_link;
+    }
+    audioCtx.play();
+  };
+
+  const pausePlayer = () => {
+    audioCtx.pause();
+  };
+
+  return { player, startPlayer, pausePlayer };
 }
