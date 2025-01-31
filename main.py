@@ -21,19 +21,21 @@ app.mount(
     name="static",
 )
 
-allowed_origins: list[str] = []
-# allowed_origin_regex = r"https?://([a-zA-Z0-9-]+\.)*audiobyte\.com"
-allowed_origin_regex = r"*"
+allowed_origins = [
+    "http://localhost:1234",  # Your frontend URL
+    "http://51.21.128.134:4000",  # Optional: Add other allowed origins if needed
+    "*",  # You can use "*" to allow all origins (not recommended for production)
+]
 
 # Enable CORS for all origins on WebSocket routes
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
-    allow_origin_regex=allowed_origin_regex,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
 
