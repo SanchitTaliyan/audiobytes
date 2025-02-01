@@ -59,6 +59,8 @@ def generate_episode(summary: str, is_weekly: bool):
             title = f"Start Your Day: Morning Insights | {current_date}" 
         else:
             title = f"End of Day Recap | {current_date}"
+    ist = pytz.timezone("Asia/Kolkata")
+    now = datetime.now(ist).time()
 
     # create an episode
     episode = EpisodeCreate(
@@ -69,6 +71,7 @@ def generate_episode(summary: str, is_weekly: bool):
         is_bookmark=False,
         is_deleted=False,
         time_of_day=time_of_day,
+        published_at=now,
     )
 
     query = text("INSERT INTO episodes (title, description, duration, audio_link, is_bookmark, is_deleted, time_of_day) VALUES (:title, :description, :duration, :audio_link, :is_bookmark, :is_deleted, :time_of_day) RETURNING *")
