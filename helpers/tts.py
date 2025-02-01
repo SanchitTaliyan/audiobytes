@@ -1,6 +1,6 @@
 import openai
-import boto3
-from botocore.exceptions import ClientError
+import boto3 # type: ignore
+from botocore.exceptions import ClientError # type: ignore
 from uuid import uuid4
 from config import cfg
 from schemas.text_to_speech import TextToSpeechRegisterRequest
