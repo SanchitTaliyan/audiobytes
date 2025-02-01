@@ -49,16 +49,15 @@ def generate_episode(summary: str, is_weekly: bool, time: str):
     title, time_of_day = None, None
     if is_weekly:
         time_of_day = TimeOfDay.ENFOFWEEK
-        week1, week2 = get_week_range_ist()
-        title = f"Weekly Recap | {week1} - {week2}"
+        title = f"Weekly Recap"
     else:
         time_of_day = TimeOfDay.MORNING if time == "morning" else TimeOfDay.ENDOFDAY
         current_date = get_current_date_ist()
 
         if time_of_day == TimeOfDay.MORNING:
-            title = f"Start Your Day: Morning Insights | {current_date}" 
+            title = f"Start Your Day: Morning Insights"
         else:
-            title = f"End of Day Recap | {current_date}"
+            title = f"End of Day Recap"
     ist = pytz.timezone("Asia/Kolkata")
     now = datetime.now(ist)
 
