@@ -1,9 +1,11 @@
 import openai
 import boto3 # type: ignore
+from io import BytesIO
 from botocore.exceptions import ClientError # type: ignore
 from uuid import uuid4
 from config import cfg
 from schemas.text_to_speech import TextToSpeechRegisterRequest
+from mutagen.mp3 import MP3
 
 # Initialize AWS Boto3 session
 aws_session = boto3.Session(
@@ -34,6 +36,11 @@ def convert_text_to_speech(body: TextToSpeechRegisterRequest):
             input=body.text
         )
 
+        audio_stream = BytesIO(response.content)  # Convert content to memory stream
+        audio_file = MP3(audio_stream)  # Using MP3 from mutagen
+
+        duration = audio_file.info.length  # Duration in seconds
+        print(f"Audio duration: {duration} seconds")
         # Initialize AWS S3 client
         s3_client = aws_session.client('s3')
 
@@ -55,7 +62,7 @@ def convert_text_to_speech(body: TextToSpeechRegisterRequest):
         print(f"File uploaded to S3: {s3_url}")
 
         # Return the S3 URL as a response
-        return {"s3_url": s3_url}
+        return {"s3_url": s3_url, "audio_duration": int(duration)}
 
     except Exception as exc:
         print(f"Error in converting text to speech - {body.text}")

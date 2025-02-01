@@ -66,7 +66,7 @@ def generate_episode(summary: str, is_weekly: bool, time: str):
     episode = EpisodeCreate(
         title=title,
         description=summary,
-        duration=60,
+        duration=response["audio_duration"],
         audio_link=audio_link,
         is_bookmark=False,
         is_deleted=False,

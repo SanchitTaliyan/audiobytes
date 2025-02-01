@@ -18,3 +18,4 @@ langchain-text-splitters==0.2.2
 langsmith==0.1.99
 langserve==0.2.2
 pytz==2025.1
+mutagen==1.47.0
