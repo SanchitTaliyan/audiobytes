@@ -33,7 +33,8 @@ def convert_text_to_speech(body: TextToSpeechRegisterRequest):
         response = openai.audio.speech.create(
             model="tts-1",  # Available models: 'tts-1', 'tts-1-hd'
             voice=voice_id,
-            input=body.text
+            input=body.text,
+            # speed=1.2,
         )
 
         audio_stream = BytesIO(response.content)  # Convert content to memory stream
