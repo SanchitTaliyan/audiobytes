@@ -6,6 +6,7 @@ from fastapi.staticfiles import StaticFiles
 
 from config import cfg
 from routers import episodes
+from routers import celery_task_run
 
 if not cfg.project_name:
     cfg.project_name = "AudioByte"
@@ -42,6 +43,12 @@ app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
 app.include_router(
     episodes.api_router,
     prefix="/episodes",
+    tags=["AudioByte Api's"]
+)
+
+app.include_router(
+    celery_task_run.api_router,
+    prefix="/tasks",
     tags=["AudioByte Api's"]
 )
 
