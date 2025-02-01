@@ -70,7 +70,7 @@ def generate_episode(summary: str, is_weekly: bool):
         audio_link=audio_link,
         is_bookmark=False,
         is_deleted=False,
-        time_of_day=time_of_day,
+        time_of_day=time_of_day.value,
         published_at=now,
     )
 
