@@ -48,7 +48,7 @@ def generate_episode(summary: str, is_weekly: bool, time: str):
 
     title, time_of_day = None, None
     if is_weekly:
-        time_of_day = TimeOfDay.ENFOFWEEK
+        time_of_day = TimeOfDay.ENDOFWEEK
         title = f"Weekly Recap"
     else:
         time_of_day = TimeOfDay.MORNING if time == "morning" else TimeOfDay.ENDOFDAY

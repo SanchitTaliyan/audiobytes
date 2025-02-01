@@ -9,7 +9,7 @@ class TimeOfDay(PyEnum):
     MORNING = "MORNING"
     MIDDAY = "MIDDAY"
     ENDOFDAY = "ENDOFDAY"
-    ENFOFWEEK = "ENFOFWEEK"
+    ENDOFWEEK = "ENDOFWEEK"
 
 class Episode(Base):
     __tablename__ = "episodes"
