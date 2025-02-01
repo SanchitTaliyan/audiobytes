@@ -63,7 +63,11 @@ export function useAudioPlayer() {
     audioCtx.pause();
   };
 
-  return { player, startPlayer, pausePlayer };
+  const seekAudio = (seconds) => {
+    audioCtx.currentTime = Math.max(0, Math.min(seconds, audioCtx.duration));
+  };
+
+  return { player, startPlayer, pausePlayer, seekAudio };
 }
 
 export function useEpisodePlayer(episode) {
@@ -86,12 +90,16 @@ export function useEpisodePlayer(episode) {
     const duration = isSelected ? player.duration || 0 : episdeDuration;
 
     const progress = player.currentTime / duration;
+    const currentTime = player.currentTime;
+    const remainingTime = episdeDuration - currentTime;
 
     return {
       isSelected,
       isPlaying,
       duration,
       progress,
+      currentTime,
+      remainingTime,
     };
   }, [player]);
 
