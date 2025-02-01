@@ -36,7 +36,7 @@ def get_week_range_ist() -> tuple:
     
     return week1.strftime("%d %b"), week2.strftime("%d %b")
 
-def generate_episode(summary: str, is_weekly: bool):
+def generate_episode(summary: str, is_weekly: bool, time: str):
     try:
         body = TextToSpeechRegisterRequest(text=summary)
         response = convert_text_to_speech(body)
@@ -52,7 +52,7 @@ def generate_episode(summary: str, is_weekly: bool):
         week1, week2 = get_week_range_ist()
         title = f"Weekly Recap | {week1} - {week2}"
     else:
-        time_of_day = get_time_of_day()
+        time_of_day = TimeOfDay.MORNING if time == "morning" else TimeOfDay.ENDOFDAY
         current_date = get_current_date_ist()
 
         if time_of_day == TimeOfDay.MORNING:

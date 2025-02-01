@@ -15,7 +15,7 @@ class EpisodeBase(BaseModel):
     title: str
     description: str
     duration: int
-    published_at: datetime
+    published_at: Union[datetime, None] = None
     audio_link: str
     is_bookmark: bool
     is_deleted: bool

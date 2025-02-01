@@ -14,7 +14,7 @@ def create_morning_episode(params):
     summary = generate_podcast(data, "morning")
 
     # Create episode
-    generate_episode(summary, False)
+    generate_episode(summary, False, "morning")
 
 @celery_app.task(queue='default')
 def create_eod_episode(params):
@@ -24,7 +24,7 @@ def create_eod_episode(params):
     summary = generate_podcast(data, "eod")
 
     # Create episode for EOD
-    generate_episode(summary, False)
+    generate_episode(summary, False, "eod")
 
 @celery_app.task(queue='default')    
 def create_weekly_episode(params):
@@ -35,4 +35,4 @@ def create_weekly_episode(params):
     summary = generate_podcast(data, "weekly")
 
     # Create episode
-    generate_episode(summary, False)
+    generate_episode(summary, True, "weekly")
