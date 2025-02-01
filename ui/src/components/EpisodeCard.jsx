@@ -9,16 +9,9 @@ import weekly from "assets/weekly.png";
 import monthly from "assets/monthly.png";
 import { useEpisodePlayer, useAudioPlayer } from "../player";
 
-const EpisodeCard = ({ episode, toggleBookmark }) => {
-  const {
-    title,
-    description,
-    duration,
-    published_at,
-    audio_link,
-    is_bookmark,
-    time_of_day,
-  } = episode;
+const EpisodeCard = ({ episode, toggleBookmark, onPlay }) => {
+  const { title, description, published_at, is_bookmark, time_of_day } =
+    episode;
   let thumbnailSrc;
 
   switch (time_of_day) {
@@ -40,7 +33,10 @@ const EpisodeCard = ({ episode, toggleBookmark }) => {
   }
 
   return (
-    <div className="flex w-full gap-2 border-b border-[#3A3A3C] p-5">
+    <div
+      className="flex w-full gap-2 border-b border-[#3A3A3C] p-5"
+      onClick={() => onPlay(episode.id)}
+    >
       <img className="h-11 w-11 rounded-md" src={thumbnailSrc} />
       <div className="gap-0.25 flex grow flex-col overflow-hidden">
         <div className="text-base font-semibold leading-5 text-white">
@@ -79,7 +75,8 @@ function EpisodePlayer({ episode }) {
     <div
       style={{ "--color": color }}
       className="flex items-center justify-between self-stretch"
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation();
         if (isPlaying) pausePlayer();
         else startPlayer(episode);
       }}

@@ -2,15 +2,15 @@ import EndOfDayImg from "assets/eod.png";
 import MidImg from "assets/mid.png";
 import MorningImg from "assets/morning.png";
 import WeeklyImg from "assets/weekly.png";
-import { compareDesc, format, isToday, isYesterday } from "date-fns";
+import { compareDesc, format, isToday } from "date-fns";
 import { BookmarkFilledIcon, CloseIcon, PlayIcon } from "icons";
-import { keyBy } from "lodash-es";
 import { useEffect, useState } from "react";
+import AudioPlayer from "./components/AudioPlayer";
 import EpisodeCard from "./components/EpisodeCard";
 import { PauseIcon } from "./components/icons";
 import { EPISODE_TYPE } from "./constants/enums";
-import episodesService from "./services/episodesService";
 import { useAudioPlayer, useEpisodePlayer } from "./player";
+import episodesService from "./services/episodesService";
 
 const config = {
   [EPISODE_TYPE.MORNING]: {
@@ -63,6 +63,8 @@ const intialFilters = {
 const initialEpisodesList = [];
 
 export function App() {
+  const [playingEpisodeId, setPlayingEpisodeId] = useState(null);
+  const [showPlayer, setShowPlayer] = useState(false);
   const [episodesList, setEpisodesList] = useState(initialEpisodesList);
   const [filters, setFilters] = useState(intialFilters);
 
@@ -72,6 +74,7 @@ export function App() {
         episodeId: episode.id,
         bookmark: !episode.is_bookmark,
       });
+      updatedEpisode.today = isToday(updatedEpisode.published_at);
 
       const nextEpisodesList = [...episodesList];
       const i = nextEpisodesList.indexOf(episode);
@@ -85,6 +88,11 @@ export function App() {
 
   const handleFilterClick = (filter, value) => {
     setFilters((prev) => ({ ...prev, [filter]: value }));
+  };
+
+  const handleEpisodeClick = (id) => {
+    setPlayingEpisodeId(id);
+    setShowPlayer(true);
   };
 
   useEffect(() => {
@@ -122,10 +130,18 @@ export function App() {
 
   // ignore filters for today's episodes
   const todayEpisodes = episodesList.filter((ep) => ep.today);
-
+  const playingEpisode = episodesList.find((ep) => ep.id === playingEpisodeId);
   return (
     <>
       <title>Today's Brief</title>
+      {showPlayer && playingEpisode && (
+        <AudioPlayer
+          toggleBookmark={toogleBookmark}
+          episode={playingEpisode}
+          config={config[playingEpisode.time_of_day]}
+          onClose={() => setShowPlayer(false)}
+        />
+      )}
 
       <div className="flex flex-1 flex-col overflow-y-auto">
         <div className="flex h-9 flex-col items-start justify-start px-5 pt-2">
@@ -138,7 +154,7 @@ export function App() {
 
         <div className="no-scrollbar flex flex-shrink-0 flex-row gap-4 overflow-auto px-5 pb-[30px] pt-[10px]">
           {todayEpisodes.map((ep) => (
-            <Poster key={ep.id} episode={ep} />
+            <Poster key={ep.id} episode={ep} onPlay={handleEpisodeClick} />
           ))}
         </div>
 
@@ -192,6 +208,7 @@ export function App() {
           <EpisodeCard
             key={episode.id}
             episode={episode}
+            onPlay={handleEpisodeClick}
             toggleBookmark={() => toogleBookmark(episode)}
           />
         ))}
@@ -216,7 +233,7 @@ function Filter({ active, icon, label, value, onFilterClick }) {
   );
 }
 
-function Poster({ episode }) {
+function Poster({ episode, onPlay }) {
   const { color, img } = config[episode.time_of_day];
 
   const { isSelected, isPlaying } = useEpisodePlayer(episode);
@@ -227,6 +244,7 @@ function Poster({ episode }) {
       className={
         "flex h-[356px] flex-col items-start justify-start rounded-[14px] bg-[var(--color)]"
       }
+      onClick={() => onPlay(episode.id)}
     >
       <div className="flex h-[356px] w-[267px] flex-col items-start justify-start overflow-hidden bg-black/10 shadow-[0px_6px_12px_0px_rgba(0,0,0,0.10)]">
         <div className="flex h-[210px] flex-col items-center justify-center self-stretch pb-[18px] pt-7">
@@ -286,7 +304,8 @@ function EpisodePlayer({ episode }) {
     <div
       style={{ "--color": color }}
       className="flex flex-col items-center justify-center overflow-hidden rounded-[100px] bg-white py-1.5 pl-[9px] pr-[11px] opacity-95"
-      onClick={() => {
+      onClick={(e) => {
+        e.stopPropagation();
         if (isPlaying) pausePlayer();
         else startPlayer(episode);
       }}
