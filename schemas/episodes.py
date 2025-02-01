@@ -1,4 +1,4 @@
-from datetime import datetime, _Time
+from datetime import datetime, time
 from pydantic import BaseModel, UUID4
 from typing import Optional, Union
 
@@ -15,7 +15,7 @@ class EpisodeBase(BaseModel):
     title: str
     description: str
     duration: int
-    published_at: _Time
+    published_at: time
     audio_link: str
     is_bookmark: bool
     is_deleted: bool
