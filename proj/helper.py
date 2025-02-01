@@ -60,7 +60,7 @@ def generate_episode(summary: str, is_weekly: bool):
         else:
             title = f"End of Day Recap | {current_date}"
     ist = pytz.timezone("Asia/Kolkata")
-    now = datetime.now(ist).time()
+    now = datetime.now(ist)
 
     # create an episode
     episode = EpisodeCreate(
